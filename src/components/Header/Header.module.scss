@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(rgb(0, 21, 41) 40%, rgb(53, 50, 50) 100%);
+  padding: 10px;
+  height: 70px;
+  &__logo {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    border-bottom: 1px solid orange;
+    border-top: 1px solid orange;
+    padding: 6px;
+    border-radius: 5px;
+  }
+  &__navbar {
+    display: flex;
+    list-style: none;
+    justify-content: flex-end;
+    align-items: center;
+
+    &__item {
+      padding: 5px;
+      color: white;
+      font-size: 16px;
+    }
+  }
+}
