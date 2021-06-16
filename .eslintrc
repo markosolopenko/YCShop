@@ -1,0 +1,9 @@
+{
+  "extends": ["@shelf/eslint-config/frontend-typescript"],
+  "rules": {
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "any", "prev": "multiline-block-like", "next": "multiline-block-like" }
+    ]
+  }
+}
