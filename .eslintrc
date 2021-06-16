@@ -1,9 +1,11 @@
 {
   "extends": ["@shelf/eslint-config/frontend-typescript"],
   "rules": {
+    "react/react-in-jsx-scope": 0,
     "padding-line-between-statements": [
       "error",
       { "blankLine": "any", "prev": "multiline-block-like", "next": "multiline-block-like" }
     ]
+    
   }
 }
