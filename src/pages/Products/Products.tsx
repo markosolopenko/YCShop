@@ -1,7 +1,21 @@
-import { useRef } from "react";
+import {
+  ProductsContextDispatch,
+  ProductsContextState,
+} from "context/ProductsContext";
+import { useContext, useEffect, useRef } from "react";
+import { ProductsList } from "../../components/ProductsList/ProductsList";
+
 import s from "./Products.module.scss";
 
 export const Products: React.FC = () => {
+  const state = useContext(ProductsContextState);
+  const dispatch = useContext(ProductsContextDispatch);
+
+  const { products } = state;
+  const { items } = products;
+
+  useEffect(() => {}, []);
+
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
   const scrollToBody = () => {
     if (body.current) {
@@ -26,7 +40,9 @@ export const Products: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className={s.products__body} ref={body}></div>
+      <div className={s.products__body} ref={body}>
+        <ProductsList productsList={items} />
+      </div>
     </div>
   );
 };
