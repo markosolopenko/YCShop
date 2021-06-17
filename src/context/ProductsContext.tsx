@@ -1,13 +1,16 @@
 import React, { createContext, Reducer, useReducer } from "react";
 
-import { FETCH_PRODUCTS } from "actionTypes/products";
+import { FETCH_PRODUCTS, FETCH_PRODUCT_BY_ID } from "actionTypes/products";
 import { IProductsContext } from "./types";
-import { IProducts } from "../common/types/types";
+import { IProduct, IProducts } from "../common/types/types";
 
-type Action = { type: "FETCH_PRODUCTS"; payload: IProducts };
+type Action =
+  | { type: "FETCH_PRODUCTS"; payload: IProducts }
+  | { type: "FETCH_PRODUCT_BY_ID"; payload: IProduct };
 
 const initialState: IProductsContext = {
   products: { page: 0, perPage: 0, totalItems: 0, items: [] },
+  product: null,
 };
 
 export const ProductsContextState = createContext<IProductsContext>(initialState);
@@ -20,6 +23,11 @@ const productsReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         products: action.payload,
+      };
+    case FETCH_PRODUCT_BY_ID:
+      return {
+        ...state,
+        product: action.payload,
       };
     default:
       return state;

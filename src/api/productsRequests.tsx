@@ -7,3 +7,11 @@ export const getProducts = (page: number, perPage: number) => {
     return e.message;
   }
 };
+
+export const getProductById = (id: number) => {
+  try {
+    return axiosInstance.get(`/${id}`);
+  } catch (e: any) {
+    return e.message;
+  }
+};

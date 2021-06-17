@@ -1,1 +1,1 @@
-export const Routes = { PRODUCTS: "/products" };
+export const Routes = { PRODUCTS: "/products", PRODUCT_DEATAILS: "/details" };

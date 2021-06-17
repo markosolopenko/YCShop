@@ -28,6 +28,9 @@
       align-items: center;
       padding: 5px;
       cursor: pointer;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
 
       font-size: 16px;
       &:hover {
@@ -35,10 +38,4 @@
       }
     }
   }
-}
-
-.link {
-  text-decoration: none;
-  color: white;
-  font-weight: 600;
 }

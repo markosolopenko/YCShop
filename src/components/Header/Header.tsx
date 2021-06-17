@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { TNavbarItems } from "./types";
 import { Cart } from "../Cart/Cart";
@@ -8,17 +8,18 @@ import s from "./Header.module.scss";
 
 const navbarItems: TNavbarItems[] = [
   { id: 1, content: "Products", route: "/products" },
-  { id: 2, content: "Link", route: "/s" },
-  { id: 3, content: "Link", route: "/d" },
-  { id: 4, content: "Link", route: "/f" },
+  { id: 2, content: "Details", route: "/details" },
+  { id: 3, content: "Linkboss", route: "/d" },
+  { id: 4, content: "Linkloss", route: "/f" },
 ];
 
 export const Header: React.FC = () => {
-  const [activeLink, setActiveLink] = useState(1);
+  const [pathname, setPathName] = useState("");
+  const location = useLocation();
 
-  const setActiveLinkHandler = (id: number) => {
-    setActiveLink(id);
-  };
+  useEffect(() => {
+    setPathName(location.pathname);
+  }, [location.pathname]);
   return (
     <div className={s.header}>
       <div className={s.header__logo}>Yalantis Shop</div>
@@ -26,18 +27,16 @@ export const Header: React.FC = () => {
       <ul className={s.header__navbar}>
         {navbarItems.map((item) => {
           return (
-            <li
-              onClick={() => setActiveLinkHandler(item.id)}
-              className={s.header__navbar__item}
+            <Link
+              to={item.route}
               key={item.id}
+              className={s.header__navbar__item}
               style={{
-                backgroundColor: item.id === activeLink ? "#94D2BD" : "#0a9396",
+                backgroundColor: pathname === item.route ? "#94D2BD" : "#0a9396",
               }}
             >
-              <Link className={s.link} to={item.route}>
-                {item.content}
-              </Link>
-            </li>
+              <li>{item.content}</li>
+            </Link>
           );
         })}
         <Cart />
