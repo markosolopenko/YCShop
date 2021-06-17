@@ -1,31 +1,49 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import s from "./Header.module.scss";
+
 import { TNavbarItems } from "./types";
 import { Cart } from "../Cart/Cart";
 
+import s from "./Header.module.scss";
+
 const navbarItems: TNavbarItems[] = [
-  { id: 1, content: "Some", route: "/cart" },
-  { id: 2, content: "Some", route: "/cart" },
-  { id: 3, content: "Some", route: "/cart" },
-  { id: 4, content: "Some", route: "/cart" },
-  { id: 5, content: "Some", route: "/cart" },
-  { id: 6, content: "Some", route: "/cart" },
-  { id: 7, content: "Come", route: "/cart" },
-  { id: 8, content: <Cart />, route: "/cart" },
+  { id: 1, content: "Products", route: "/products" },
+  { id: 2, content: "Link", route: "/s" },
+  { id: 3, content: "Link", route: "/d" },
+  { id: 4, content: "Link", route: "/f" },
 ];
 
 export const Header: React.FC = () => {
+  const [activeLink, setActiveLink] = useState(1);
+
+  const setActiveLinkHandler = (id: number) => {
+    setActiveLink(id);
+  };
   return (
     <div className={s.header}>
       <div className={s.header__logo}>Yalantis Shop</div>
+
       <ul className={s.header__navbar}>
         {navbarItems.map((item) => {
           return (
-            <Link className="link" to={item.route} key={item.id}>
-              <li className={s.header__navbar__item}>{item.content}</li>
-            </Link>
+            <li
+              onClick={() => setActiveLinkHandler(item.id)}
+              className={s.header__navbar__item}
+              key={item.id}
+              style={{
+                backgroundColor:
+                  item.id === activeLink
+                    ? "#f7c594"
+                    : "linear-gradient(rgb(0, 21, 41) 40%, rgb(53, 50, 50) 100%)",
+              }}
+            >
+              <Link className={s.link} to={item.route}>
+                {item.content}
+              </Link>
+            </li>
           );
         })}
+        <Cart />
       </ul>
     </div>
   );

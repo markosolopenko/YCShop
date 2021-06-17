@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(rgb(0, 21, 41) 40%, rgb(53, 50, 50) 100%);
-  padding: 10px;
+
   height: 70px;
   &__logo {
     color: white;
@@ -13,17 +13,31 @@
     border-top: 1px solid orange;
     padding: 6px;
     border-radius: 5px;
+    margin-left: 20px;
   }
   &__navbar {
     display: flex;
+
     list-style: none;
-    justify-content: flex-end;
-    align-items: center;
+
+    height: 100%;
 
     &__item {
+      display: flex;
+      align-items: center;
       padding: 5px;
-      color: white;
+      cursor: pointer;
+
       font-size: 16px;
+      &:hover {
+        background-color: #f7c594;
+      }
     }
   }
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
 }

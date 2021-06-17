@@ -1,30 +1,34 @@
 .cart-component {
   display: flex;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 30px;
 }
 .cart {
   display: flex;
-  background-color: orange;
+  background-color: rgb(243, 185, 77);
   padding: 15px;
   border-radius: 30px;
 
   position: relative;
+  &:hover {
+    background-color: orange;
+  }
   &__icon {
     width: 20px;
     height: 20px;
     color: white;
   }
   &__counter {
+    padding: 5px;
     background-color: red;
     color: white;
     font-size: 12px;
     font-weight: bold;
-    padding: 2px;
-    border-radius: 100px;
+
+    border-radius: 10px;
 
     position: absolute;
-    bottom: -5px;
+    bottom: -10px;
     right: 0;
   }
 }
