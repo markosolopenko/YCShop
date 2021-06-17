@@ -1,4 +1,5 @@
 export interface IProduct {
+  isEditable: boolean;
   id: string;
   name: string;
   price: number;

@@ -31,10 +31,7 @@ export const Header: React.FC = () => {
               className={s.header__navbar__item}
               key={item.id}
               style={{
-                backgroundColor:
-                  item.id === activeLink
-                    ? "#f7c594"
-                    : "linear-gradient(rgb(0, 21, 41) 40%, rgb(53, 50, 50) 100%)",
+                backgroundColor: item.id === activeLink ? "#94D2BD" : "#0a9396",
               }}
             >
               <Link className={s.link} to={item.route}>

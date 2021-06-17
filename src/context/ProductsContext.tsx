@@ -6,18 +6,13 @@ import { IProducts } from "../common/types/types";
 
 type Action = { type: "FETCH_PRODUCTS"; payload: IProducts };
 
-type Dispatch = (action: Action) => void;
-
 const initialState: IProductsContext = {
   products: { page: 0, perPage: 0, totalItems: 0, items: [] },
 };
 
-export const ProductsContextState =
-  createContext<IProductsContext>(initialState);
+export const ProductsContextState = createContext<IProductsContext>(initialState);
 
-export const ProductsContextDispatch = createContext<{
-  dispatch: Dispatch;
-} | null>(null);
+export const ProductsContextDispatch = createContext<any>(null);
 
 const productsReducer = (state = initialState, action: Action) => {
   switch (action.type) {
@@ -32,13 +27,10 @@ const productsReducer = (state = initialState, action: Action) => {
 };
 
 export const ProductsContextProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<any, any>>(
-    productsReducer,
-    initialState
-  );
+  const [state, dispatch] = useReducer<Reducer<any, any>>(productsReducer, initialState);
   return (
     <ProductsContextState.Provider value={state}>
-      <ProductsContextDispatch.Provider value={{ dispatch }}>
+      <ProductsContextDispatch.Provider value={dispatch}>
         {children}
       </ProductsContextDispatch.Provider>
     </ProductsContextState.Provider>

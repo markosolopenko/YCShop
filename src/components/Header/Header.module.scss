@@ -2,15 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(rgb(0, 21, 41) 40%, rgb(53, 50, 50) 100%);
+
+  background-color: #0a9396;
 
   height: 70px;
   &__logo {
     color: white;
     font-size: 30px;
     font-weight: bold;
-    border-bottom: 1px solid orange;
-    border-top: 1px solid orange;
+    border-bottom: 3px solid orange;
+    border-top: 3px solid orange;
     padding: 6px;
     border-radius: 5px;
     margin-left: 20px;
