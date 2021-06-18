@@ -20,6 +20,7 @@ export const Header: React.FC = () => {
   useEffect(() => {
     setPathName(location.pathname);
   }, [location.pathname]);
+
   return (
     <div className={s.header}>
       <div className={s.header__logo}>Yalantis Shop</div>

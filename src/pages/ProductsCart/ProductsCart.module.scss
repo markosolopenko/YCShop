@@ -1,0 +1,39 @@
+.products-cart {
+  padding: 20px;
+  &__box {
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid black;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      &__name {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      &__total {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      &__delete {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+        border-radius: 5px;
+        padding: 7px;
+        &:hover {
+          cursor: pointer;
+          background-color: rgb(219, 94, 94);
+        }
+        &__icon {
+          width: 20px;
+          height: 20px;
+          color: white;
+        }
+      }
+    }
+  }
+}

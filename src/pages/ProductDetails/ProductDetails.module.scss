@@ -33,27 +33,6 @@
           }
         }
       }
-      &__counter {
-        &__amount {
-          padding: 5px 20px;
-          box-shadow: 1px 1px 2px 1px black;
-          margin: 0 5px;
-          font-size: 18px;
-          border-radius: 5px;
-        }
-        &__btn {
-          width: 40px;
-          height: 30px;
-          font-size: 20px;
-          font-weight: bold;
-          color: white;
-          background-color: orange;
-          border: none;
-          outline: none;
-          cursor: pointer;
-          border-radius: 5px;
-        }
-      }
       &__addToCart {
         display: flex;
         align-items: center;

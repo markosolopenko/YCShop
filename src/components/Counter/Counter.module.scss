@@ -1,0 +1,37 @@
+.counter {
+  &__amount {
+    margin: 0 5px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 2px solid black;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+  }
+  &__minus {
+    width: 40px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(233, 186, 98);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid black;
+  }
+  &__plus {
+    width: 40px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: orange;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid black;
+  }
+}

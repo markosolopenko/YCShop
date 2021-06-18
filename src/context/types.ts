@@ -7,4 +7,6 @@ export interface IProductsContext {
   currentPage: number;
   perPage: number;
   totalItems: number;
+  allItemsInCartAmount: number;
+  allItemsInCartSum: number;
 }

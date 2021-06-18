@@ -1,4 +1,4 @@
-import { ADD_TO_CART, FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
+import { ADD_TO_CART, CHANGE_CART_COUNTS, FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
 import { IProduct } from "common/types/types";
 import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
 import { useContext, useEffect, useRef } from "react";
@@ -12,7 +12,7 @@ export const Products: React.FC = () => {
   const state = useContext(ProductsContextState);
   const dispatch = useContext(ProductsContextDispatch);
 
-  const { products, currentPage, perPage } = state;
+  const { products, currentPage, perPage, totalItems } = state;
 
   useEffect(() => {
     getProducts(currentPage, perPage).then((data) => {
@@ -21,19 +21,25 @@ export const Products: React.FC = () => {
   }, [currentPage]);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
+
   const scrollToBody = () => {
     if (body.current) {
       body.current.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   };
   const handleAddToCartClick = (product: IProduct) => {
-    dispatch({ type: ADD_TO_CART, payload: product });
+    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+" } });
+    dispatch({
+      type: CHANGE_CART_COUNTS,
+      payload: { count: 1, sum: product.price, operator: "+" },
+    });
   };
 
   const loadMoreHandler = () => {
-    dispatch({ type: LOAD_MORE });
+    if (products.length !== totalItems) {
+      dispatch({ type: LOAD_MORE });
+    }
   };
-  console.log(products);
   return (
     <div className={s.products}>
       <div className={s.products__top}>

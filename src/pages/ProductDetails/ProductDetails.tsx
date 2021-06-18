@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { ProductsContextState } from "context/ProductsContext";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
+import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
@@ -25,22 +26,18 @@ export const ProductDetails: React.FC = () => {
             <div className={s["prodcut-detils__product__body__info"]}>
               <div className={s["prodcut-detils__product__body__info__item"]}>
                 <span className={s["prodcut-detils__product__body__info__item__span"]}>
-                  Origin:{" "}
+                  Origin:
                 </span>
                 {product.origin.toUpperCase()}
               </div>
               <div className={s["prodcut-detils__product__body__info__item"]}>
                 <span className={s["prodcut-detils__product__body__info__item__span"]}>
-                  CreatedAt:{" "}
+                  CreatedAt:
                 </span>
                 {new Date(product.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <div className={s["prodcut-detils__product__body__counter"]}>
-              <button className={s["prodcut-detils__product__body__counter__btn"]}>-</button>
-              <span className={s["prodcut-detils__product__body__counter__amount"]}>1</span>
-              <button className={s["prodcut-detils__product__body__counter__btn"]}>+</button>
-            </div>
+            <Counter startValue={1} product={product} />
             <div className={s["prodcut-detils__product__body__addToCart"]}>
               <div className={s["prodcut-detils__product__body__addToCart__button"]}>
                 ADD TO CART
@@ -48,10 +45,6 @@ export const ProductDetails: React.FC = () => {
               <Cart className={s["prodcut-detils__product__body__addToCart__cart"]} />
             </div>
           </div>
-          {/* <div className={s["prodcut-detils__product__item"]}>
-            <span className={s["prodcut-detils__product__item__span"]}>UpdatedAt: </span>
-            {new Date(product.updatedAt).toLocaleDateString()} */}
-          {/* </div> */}
         </div>
       )}
     </div>

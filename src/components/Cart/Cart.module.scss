@@ -19,13 +19,17 @@
     color: white;
   }
   &__counter {
-    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
     background-color: red;
     color: white;
     font-size: 12px;
     font-weight: bold;
 
-    border-radius: 10px;
+    border-radius: 20px;
 
     position: absolute;
     bottom: -10px;
