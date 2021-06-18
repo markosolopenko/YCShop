@@ -1,44 +1,48 @@
 import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
 import { ProductsContextDispatch } from "context/ProductsContext";
-import { ChangeEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { IProduct } from "../../common/types/types";
 import s from "./Counter.module.scss";
 
 type IProps = {
   startValue: number;
   product: IProduct;
+  addToCart: boolean;
+  onChange: any;
 };
 
-export const Counter: React.FC<IProps> = ({ startValue, product }) => {
+export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onChange }) => {
   const [counter, setCounter] = useState(startValue);
-  const handleChange = (e: ChangeEvent) => {
-    console.log(e);
-  };
+
   const dispatch = useContext(ProductsContextDispatch);
   const handleMinusClick = () => {
     if (counter > 1) {
       setCounter(counter - 1);
-      dispatch({ type: ADD_TO_CART, payload: { product, operator: "-" } });
-      dispatch({
-        type: CHANGE_CART_COUNTS,
-        payload: { count: 1, sum: product.price, operator: "-" },
-      });
+      dispatch({ type: ADD_TO_CART, payload: { product, operator: "-", amount: 1 } });
+      if (addToCart) {
+        dispatch({
+          type: CHANGE_CART_COUNTS,
+          payload: { count: 1, sum: product.price, operator: "-" },
+        });
+      }
     }
   };
   const handlePlusClick = () => {
     setCounter(counter + 1);
-    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+" } });
-    dispatch({
-      type: CHANGE_CART_COUNTS,
-      payload: { count: 1, sum: product.price, operator: "+" },
-    });
+    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: 1 } });
+    if (addToCart) {
+      dispatch({
+        type: CHANGE_CART_COUNTS,
+        payload: { count: 1, sum: product.price, operator: "+" },
+      });
+    }
   };
   return (
     <div className={s.counter}>
       <button onClick={handleMinusClick} className={s.counter__minus}>
         -
       </button>
-      <input className={s.counter__amount} value={counter} onChange={handleChange} />
+      <input className={s.counter__amount} value={counter} onChange={onChange} />
       <button onClick={handlePlusClick} className={s.counter__plus}>
         +
       </button>

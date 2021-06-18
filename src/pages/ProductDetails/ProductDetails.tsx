@@ -1,16 +1,31 @@
-import { useContext } from "react";
-import { ProductsContextState } from "context/ProductsContext";
+import { useContext, useState } from "react";
+import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
+import { IProduct } from "common/types/types";
+import { CHANGE_CART_COUNTS } from "actionTypes/products";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
+  const [value, setValue] = useState(0);
   const state = useContext(ProductsContextState);
+  const dispatch = useContext(ProductsContextDispatch);
   const { product } = state;
+
+  const handelInputChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const handleAddToCartClick = (product: IProduct) => {
+    dispatch({
+      type: CHANGE_CART_COUNTS,
+      payload: { count: value, sum: value * product.price, operator: "+" },
+    });
+  };
 
   return (
     <div className={s["prodcut-detils"]}>
-      {product && (
+      {product ? (
         <div className={s["prodcut-detils__product"]}>
           <div className={s["prodcut-detils__product__top"]}>
             <div className={s["prodcut-detils__product__top__item"]}>
@@ -37,8 +52,16 @@ export const ProductDetails: React.FC = () => {
                 {new Date(product.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <Counter startValue={1} product={product} />
-            <div className={s["prodcut-detils__product__body__addToCart"]}>
+            <Counter
+              startValue={1}
+              product={product}
+              addToCart={false}
+              onChange={handelInputChange}
+            />
+            <div
+              className={s["prodcut-detils__product__body__addToCart"]}
+              onClick={() => handleAddToCartClick(product)}
+            >
               <div className={s["prodcut-detils__product__body__addToCart__button"]}>
                 ADD TO CART
               </div>
@@ -46,6 +69,8 @@ export const ProductDetails: React.FC = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <div>NO Products ADDED</div>
       )}
     </div>
   );

@@ -29,7 +29,7 @@ export const ProductsCart: React.FC = () => {
                 <span>Name: </span>
                 {item.product.name}
               </div>
-              <Counter startValue={item.amount} product={item.product} />
+              <Counter startValue={item.amount} product={item.product} addToCart={true} />
               <div className={s["products-cart__box__item__total"]}>
                 {item.product.price}$ x {item.amount} = {item.product.price * item.amount}$
               </div>

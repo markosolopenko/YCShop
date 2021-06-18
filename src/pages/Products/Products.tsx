@@ -28,7 +28,7 @@ export const Products: React.FC = () => {
     }
   };
   const handleAddToCartClick = (product: IProduct) => {
-    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+" } });
+    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: 1 } });
     dispatch({
       type: CHANGE_CART_COUNTS,
       payload: { count: 1, sum: product.price, operator: "+" },
