@@ -1,6 +1,7 @@
-import { IProduct, IProducts } from "../common/types/types";
+import { IProduct, IProducts, IProductsInCart } from "../common/types/types";
 
 export interface IProductsContext {
   products: IProducts;
   product: IProduct | null;
+  productsAddedToCart: IProductsInCart[];
 }

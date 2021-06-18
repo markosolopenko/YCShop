@@ -14,3 +14,8 @@ export interface IProducts {
   totalItems: number;
   items: IProduct[];
 }
+
+export interface IProductsInCart {
+  amount: number;
+  product: IProduct;
+}

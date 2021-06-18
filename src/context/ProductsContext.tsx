@@ -1,16 +1,19 @@
 import React, { createContext, Reducer, useReducer } from "react";
 
-import { FETCH_PRODUCTS, FETCH_PRODUCT_BY_ID } from "actionTypes/products";
+import { ADD_TO_CART, FETCH_PRODUCTS, FETCH_PRODUCT_BY_ID } from "actionTypes/products";
+import { addToCart } from "helpers/addToCart";
 import { IProductsContext } from "./types";
 import { IProduct, IProducts } from "../common/types/types";
 
 type Action =
   | { type: "FETCH_PRODUCTS"; payload: IProducts }
-  | { type: "FETCH_PRODUCT_BY_ID"; payload: IProduct };
+  | { type: "FETCH_PRODUCT_BY_ID"; payload: IProduct }
+  | { type: "ADD_TO_CART"; payload: IProduct };
 
 const initialState: IProductsContext = {
   products: { page: 0, perPage: 0, totalItems: 0, items: [] },
   product: null,
+  productsAddedToCart: [],
 };
 
 export const ProductsContextState = createContext<IProductsContext>(initialState);
@@ -28,6 +31,11 @@ const productsReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         product: action.payload,
+      };
+    case ADD_TO_CART:
+      return {
+        ...state,
+        productsAddedToCart: addToCart(state.productsAddedToCart, action.payload),
       };
     default:
       return state;
