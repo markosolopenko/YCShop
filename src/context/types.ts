@@ -1,7 +1,10 @@
-import { IProduct, IProducts, IProductsInCart } from "../common/types/types";
+import { IProduct, IProductsInCart } from "../common/types/types";
 
 export interface IProductsContext {
-  products: IProducts;
+  products: IProduct[];
   product: IProduct | null;
   productsAddedToCart: IProductsInCart[];
+  currentPage: number;
+  perPage: number;
+  totalItems: number;
 }
