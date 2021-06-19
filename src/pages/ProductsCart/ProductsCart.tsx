@@ -18,7 +18,9 @@ export const ProductsCart: React.FC = () => {
       payload: { count: item.amount, sum: item.amount * item.product.price, operator: "-" },
     });
   };
-
+  const handleInputChange = (e: any) => {
+    console.log(e);
+  };
   return (
     <div className={s["products-cart"]}>
       <div className={s["products-cart__box"]}>
@@ -29,7 +31,12 @@ export const ProductsCart: React.FC = () => {
                 <span>Name: </span>
                 {item.product.name}
               </div>
-              <Counter startValue={item.amount} product={item.product} addToCart={true} onChange />
+              <Counter
+                startValue={item.amount}
+                product={item.product}
+                addToCart={true}
+                onChange={handleInputChange}
+              />
               <div className={s["products-cart__box__item__total"]}>
                 {item.product.price}$ x {item.amount} = {item.product.price * item.amount}$
               </div>
