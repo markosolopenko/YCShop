@@ -12,15 +12,17 @@ export const ProductDetails: React.FC = () => {
   const dispatch = useContext(ProductsContextDispatch);
   const { product } = state;
 
-  const handelInputChange = (e: any) => {
-    setValue(e.target.value);
+  const handelInputChange = (inputValue: number) => {
+    setValue(inputValue);
   };
 
   const handleAddToCartClick = (product: IProduct) => {
-    dispatch({
-      type: CHANGE_CART_COUNTS,
-      payload: { count: value, sum: value * product.price, operator: "+" },
-    });
+    if (value > 0) {
+      dispatch({
+        type: CHANGE_CART_COUNTS,
+        payload: { count: value, sum: value * product.price, operator: "+" },
+      });
+    }
   };
 
   return (
@@ -53,7 +55,7 @@ export const ProductDetails: React.FC = () => {
               </div>
             </div>
             <Counter
-              startValue={1}
+              startValue={0}
               product={product}
               addToCart={false}
               onChange={handelInputChange}
