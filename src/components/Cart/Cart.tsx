@@ -1,4 +1,5 @@
 import { ProductsContextState } from "context/ProductsContext";
+import { formatMoney } from "helpers/formatMoney";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ export const Cart: React.FC = () => {
           <div className={s.cart__counter}>{allItemsInCartAmount}</div>
         </div>
       </Link>
-      <div className={s.amountOfMoney}>{allItemsInCartSum}$</div>
+      <div className={s.amountOfMoney}>{formatMoney(allItemsInCartSum)}</div>
     </div>
   );
 };

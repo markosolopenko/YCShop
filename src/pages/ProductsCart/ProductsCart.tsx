@@ -2,6 +2,7 @@ import { ProductsContextDispatch, ProductsContextState } from "context/ProductsC
 import { useContext } from "react";
 import { CHANGE_CART_COUNTS, DELETE_ITEM_FROM_CART } from "actionTypes/products";
 import { IProductsInCart } from "common/types/types";
+import { formatMoney } from "helpers/formatMoney";
 import { Counter } from "../../components/Counter/Counter";
 import { ReactComponent as DeleteIcon } from "../../assets/trash-alt-solid.svg";
 import s from "./ProductsCart.module.scss";
@@ -18,8 +19,8 @@ export const ProductsCart: React.FC = () => {
       payload: { count: item.amount, sum: item.amount * item.product.price, operator: "-" },
     });
   };
-  const handleInputChange = (e: any) => {
-    console.log(e);
+  const handleInputChange = (inputValue: number) => {
+    return inputValue;
   };
   return (
     <div className={s["products-cart"]}>
@@ -38,7 +39,8 @@ export const ProductsCart: React.FC = () => {
                 onChange={handleInputChange}
               />
               <div className={s["products-cart__box__item__total"]}>
-                {item.product.price}$ x {item.amount} = {item.product.price * item.amount}$
+                {item.product.price}$ x {item.amount} =
+                {formatMoney(item.product.price * item.amount)}
               </div>
               <div
                 className={s["products-cart__box__item__delete"]}
@@ -50,7 +52,7 @@ export const ProductsCart: React.FC = () => {
           );
         })}
       </div>
-      <div className={s["products-cart__total"]}>Total: {allItemsInCartSum}$</div>
+      <div className={s["products-cart__total"]}>Total: {formatMoney(allItemsInCartSum)}</div>
     </div>
   );
 };

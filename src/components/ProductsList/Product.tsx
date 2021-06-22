@@ -2,6 +2,7 @@ import { FETCH_PRODUCT_BY_ID } from "actionTypes/products";
 import { IProduct } from "common/types/types";
 import { Routes } from "constants/routes";
 import { ProductsContextDispatch } from "context/ProductsContext";
+import { formatMoney } from "helpers/formatMoney";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { getProductById } from "../../api/productsRequests";
@@ -28,7 +29,7 @@ export const Product: React.FC<IProps> = ({ item, handleAddToCartClick }) => {
         <span className={s.product__item__span}>Name: </span> {item.name}
       </div>
       <div className={s.product__item}>
-        <span className={s.product__item__span}>Price: </span> {item.price}$
+        <span className={s.product__item__span}>Price: </span> {formatMoney(item.price)}
       </div>
       <div className={s.product__item}>
         <span className={s.product__item__span}>Origin: </span> {item.origin.toUpperCase()}

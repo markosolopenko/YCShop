@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
 import { IProduct } from "common/types/types";
 import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
+import { formatMoney } from "helpers/formatMoney";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
@@ -26,7 +27,7 @@ export const ProductDetails: React.FC = () => {
     }
     setValue(0);
   };
-  console.log(value);
+
   return (
     <div className={s["prodcut-detils"]}>
       {product ? (
@@ -38,7 +39,7 @@ export const ProductDetails: React.FC = () => {
             </div>
             <div className={s["prodcut-detils__product__top__item"]}>
               <span className={s["prodcut-detils__product__top__item__span"]}>Price: </span>
-              {product.price}$
+              {formatMoney(product.price)}
             </div>
           </div>
           <div className={s["prodcut-detils__product__body"]}>

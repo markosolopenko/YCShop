@@ -1,6 +1,7 @@
 {
   "extends": ["@shelf/eslint-config/frontend-typescript"],
   "rules": {
+    "no-console": 1,
     "react/react-in-jsx-scope": 0,
     "sort-imports": 0,
     "prettier/prettier": 0,

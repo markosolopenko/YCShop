@@ -1,4 +1,4 @@
-import React, { createContext, Reducer, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 
 import {
   ADD_TO_CART,
@@ -9,6 +9,7 @@ import {
   LOAD_MORE,
 } from "actionTypes/products";
 import { addToCart } from "helpers/addToCart";
+import { changeCartCounts } from "helpers/changeCartCounts";
 import { IProductsContext } from "./types";
 import { IProduct, IProducts } from "../common/types/types";
 
@@ -59,14 +60,20 @@ const productsReducer = (state = initialState, action: Action) => {
     }
     case CHANGE_CART_COUNTS: {
       const { count, sum, operator } = action.payload;
+      const previousState: { count: number; sum: number } = {
+        count: state.allItemsInCartAmount,
+        sum: state.allItemsInCartSum,
+      };
+      const { allItemsInCartAmount, allItemsInCartSum } = changeCartCounts(
+        count,
+        sum,
+        operator,
+        previousState
+      );
       return {
         ...state,
-        allItemsInCartAmount:
-          operator === "+"
-            ? state.allItemsInCartAmount + count
-            : state.allItemsInCartAmount - count,
-        allItemsInCartSum:
-          operator === "+" ? state.allItemsInCartSum + sum : state.allItemsInCartSum - sum,
+        allItemsInCartAmount,
+        allItemsInCartSum,
       };
     }
     case LOAD_MORE:
@@ -88,7 +95,7 @@ const productsReducer = (state = initialState, action: Action) => {
 };
 
 export const ProductsContextProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer<Reducer<any, any>>(productsReducer, initialState);
+  const [state, dispatch] = useReducer(productsReducer, initialState);
   return (
     <ProductsContextState.Provider value={state}>
       <ProductsContextDispatch.Provider value={dispatch}>

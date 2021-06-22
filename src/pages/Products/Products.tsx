@@ -36,10 +36,9 @@ export const Products: React.FC = () => {
   };
 
   const loadMoreHandler = () => {
-    if (products.length !== totalItems) {
-      dispatch({ type: LOAD_MORE });
-    }
+    dispatch({ type: LOAD_MORE });
   };
+
   return (
     <div className={s.products}>
       <div className={s.products__top}>
@@ -58,9 +57,11 @@ export const Products: React.FC = () => {
       <div className={s.products__body} ref={body}>
         <ProductsList productsList={products} handleAddToCartClick={handleAddToCartClick} />
       </div>
-      <div className={s.products__loadMore} onClick={loadMoreHandler}>
-        LOAD MORE <ArrowDown className={s.products__loadMore__arrow} />
-      </div>
+      {products.length !== totalItems && (
+        <div className={s.products__loadMore} onClick={loadMoreHandler}>
+          LOAD MORE <ArrowDown className={s.products__loadMore__arrow} />
+        </div>
+      )}
     </div>
   );
 };

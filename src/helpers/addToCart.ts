@@ -5,7 +5,7 @@ export const addToCart = (
   product: IProduct,
   operator: string,
   amount: number
-): any => {
+): IProductsInCart[] => {
   let flag = false;
   for (let i = 0; i < productsInCart.length; i++) {
     if (productsInCart[i].product.id === product.id) {
