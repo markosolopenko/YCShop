@@ -9,8 +9,6 @@ import s from "./Header.module.scss";
 const navbarItems: TNavbarItems[] = [
   { id: 1, content: "Products", route: "/products" },
   { id: 2, content: "Details", route: "/details" },
-  { id: 3, content: "Linkboss", route: "/d" },
-  { id: 4, content: "Linkloss", route: "/f" },
 ];
 
 export const Header: React.FC = () => {
