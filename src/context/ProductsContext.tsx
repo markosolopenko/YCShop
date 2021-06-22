@@ -15,7 +15,7 @@ import { IProduct, IProducts } from "../common/types/types";
 type Action =
   | { type: "FETCH_PRODUCTS"; payload: IProducts }
   | { type: "FETCH_PRODUCT_BY_ID"; payload: IProduct }
-  | { type: "ADD_TO_CART"; payload: { product: IProduct; operator: string } }
+  | { type: "ADD_TO_CART"; payload: { product: IProduct; operator: string; amount: number } }
   | { type: "LOAD_MORE" }
   | { type: "CHANGE_CART_COUNTS"; payload: { count: number; sum: number; operator: string } }
   | { type: "DELETE_ITEM_FROM_CART"; payload: string };
@@ -51,10 +51,10 @@ const productsReducer = (state = initialState, action: Action) => {
         product: action.payload,
       };
     case ADD_TO_CART: {
-      const { product, operator } = action.payload;
+      const { product, operator, amount } = action.payload;
       return {
         ...state,
-        productsAddedToCart: addToCart(state.productsAddedToCart, product, operator),
+        productsAddedToCart: addToCart(state.productsAddedToCart, product, operator, amount),
       };
     }
     case CHANGE_CART_COUNTS: {

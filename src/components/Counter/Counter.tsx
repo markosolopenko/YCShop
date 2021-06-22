@@ -23,9 +23,9 @@ export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onCh
   const handleMinusClick = () => {
     if (counter > 1) {
       setCounter(counter - 1);
-      dispatch({ type: ADD_TO_CART, payload: { product, operator: "-", amount: 1 } });
 
       if (addToCart) {
+        dispatch({ type: ADD_TO_CART, payload: { product, operator: "-", amount: counter } });
         dispatch({
           type: CHANGE_CART_COUNTS,
           payload: { count: 1, sum: product.price, operator: "-" },
@@ -35,9 +35,9 @@ export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onCh
   };
   const handlePlusClick = () => {
     setCounter(counter + 1);
-    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: 1 } });
 
     if (addToCart) {
+      dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: 1 } });
       dispatch({
         type: CHANGE_CART_COUNTS,
         payload: { count: 1, sum: product.price, operator: "+" },
@@ -51,7 +51,7 @@ export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onCh
       </button>
       <input
         className={s.counter__amount}
-        value={counter}
+        value={startValue}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setCounter(Number(e.target.value))}
       />
       <button onClick={handlePlusClick} className={s.counter__plus}>

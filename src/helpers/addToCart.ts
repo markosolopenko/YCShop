@@ -3,13 +3,14 @@ import { IProduct, IProductsInCart } from "common/types/types";
 export const addToCart = (
   productsInCart: IProductsInCart[],
   product: IProduct,
-  operator: string
+  operator: string,
+  amount: number
 ): any => {
   let flag = false;
   for (let i = 0; i < productsInCart.length; i++) {
     if (productsInCart[i].product.id === product.id) {
       if (operator === "+") {
-        productsInCart[i].amount += 1;
+        productsInCart[i].amount += amount;
       } else if (operator === "-") {
         productsInCart[i].amount -= 1;
       }
@@ -18,7 +19,7 @@ export const addToCart = (
     }
   }
   if (!flag) {
-    productsInCart.push({ amount: 1, product: product });
+    productsInCart.push({ amount, product: product });
   }
 
   return productsInCart;

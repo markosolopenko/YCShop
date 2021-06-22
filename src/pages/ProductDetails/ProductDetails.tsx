@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
 import { IProduct } from "common/types/types";
-import { CHANGE_CART_COUNTS } from "actionTypes/products";
+import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
@@ -22,9 +22,11 @@ export const ProductDetails: React.FC = () => {
         type: CHANGE_CART_COUNTS,
         payload: { count: value, sum: value * product.price, operator: "+" },
       });
+      dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: value } });
     }
+    setValue(0);
   };
-
+  console.log(value);
   return (
     <div className={s["prodcut-detils"]}>
       {product ? (
@@ -55,7 +57,7 @@ export const ProductDetails: React.FC = () => {
               </div>
             </div>
             <Counter
-              startValue={0}
+              startValue={value}
               product={product}
               addToCart={false}
               onChange={handelInputChange}
