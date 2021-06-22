@@ -36,4 +36,17 @@
       }
     }
   }
+  &__total {
+    font-size: 25px;
+    font-weight: bold;
+    background-color: #ae2012;
+    padding: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+    color: white;
+    border-radius: 5px;
+  }
 }

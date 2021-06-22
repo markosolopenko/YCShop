@@ -10,7 +10,7 @@ export const ProductsCart: React.FC = () => {
   const state = useContext(ProductsContextState);
   const dispatch = useContext(ProductsContextDispatch);
 
-  const { productsAddedToCart } = state;
+  const { productsAddedToCart, allItemsInCartSum } = state;
   const handleDeleteProduct = (item: IProductsInCart) => {
     dispatch({ type: DELETE_ITEM_FROM_CART, payload: item.product.id });
     dispatch({
@@ -50,6 +50,7 @@ export const ProductsCart: React.FC = () => {
           );
         })}
       </div>
+      <div className={s["products-cart__total"]}>Total: {allItemsInCartSum}$</div>
     </div>
   );
 };
