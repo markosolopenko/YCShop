@@ -1,4 +1,5 @@
-import { IProduct, IProductsInCart } from "common/types/types";
+import { operators } from "constants/operators";
+import { IProduct, IProductsInCart } from "../types/types";
 
 export const addToCart = (
   productsInCart: IProductsInCart[],
@@ -7,11 +8,12 @@ export const addToCart = (
   amount: number
 ): IProductsInCart[] => {
   let flag = false;
+  const { plus } = operators;
   for (let i = 0; i < productsInCart.length; i++) {
     if (productsInCart[i].product.id === product.id) {
-      if (operator === "+") {
+      if (operator === plus) {
         productsInCart[i].amount += amount;
-      } else if (operator === "-") {
+      } else {
         productsInCart[i].amount -= 1;
       }
       flag = true;

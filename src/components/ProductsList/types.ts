@@ -1,6 +1,5 @@
-import { IProduct } from "common/types/types";
+import { IProduct } from "../../types/types";
 
 export interface IProps {
   productsList: IProduct[];
-  handleAddToCartClick: (product: IProduct) => void;
 }

@@ -1,3 +1,5 @@
+import { operators } from "constants/operators";
+
 type ReturnType = {
   allItemsInCartAmount: number;
   allItemsInCartSum: number;
@@ -13,10 +15,13 @@ export const changeCartCounts = (
     allItemsInCartAmount: current.count,
     allItemsInCartSum: current.sum,
   };
-  if (operator === "+") {
-    (result.allItemsInCartAmount += count), (result.allItemsInCartSum += sum);
-  } else if (operator === "-") {
-    (result.allItemsInCartAmount -= count), (result.allItemsInCartSum -= sum);
+  const { plus } = operators;
+  if (operator === plus) {
+    result.allItemsInCartAmount += count;
+    result.allItemsInCartSum += sum;
+  } else {
+    result.allItemsInCartAmount -= count;
+    result.allItemsInCartSum -= sum;
   }
 
   return result;

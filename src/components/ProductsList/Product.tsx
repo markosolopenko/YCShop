@@ -1,25 +1,34 @@
-import { FETCH_PRODUCT_BY_ID } from "actionTypes/products";
-import { IProduct } from "common/types/types";
+import { ADD_TO_CART, CHANGE_CART_COUNTS, FETCH_PRODUCT_BY_ID } from "actionTypes/products";
 import { Routes } from "constants/routes";
 import { ProductsContextDispatch } from "context/ProductsContext";
 import { formatMoney } from "helpers/formatMoney";
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
+import { operators } from "constants/operators";
+import { IProduct } from "../../types/types";
 import { getProductById } from "../../api/productsRequests";
 
 import s from "./Product.module.scss";
 
 type IProps = {
   item: IProduct;
-  handleAddToCartClick: (item: IProduct) => void;
 };
 
-export const Product: React.FC<IProps> = ({ item, handleAddToCartClick }) => {
+export const Product: React.FC<IProps> = ({ item }) => {
   const dispatch = useContext(ProductsContextDispatch);
+  const { plus } = operators;
 
-  const handleDetailButtonClick = (id: string) => {
-    getProductById(id).then((data) => {
+  const handleDetailButtonClick = useCallback(() => {
+    getProductById(item.id).then((data) => {
       dispatch({ type: FETCH_PRODUCT_BY_ID, payload: data });
+    });
+  }, []);
+
+  const handleAddToCartClick: () => void = () => {
+    dispatch({ type: ADD_TO_CART, payload: { product: item, operator: plus, amount: 1 } });
+    dispatch({
+      type: CHANGE_CART_COUNTS,
+      payload: { count: 1, sum: item.price, operator: plus },
     });
   };
 
@@ -37,17 +46,11 @@ export const Product: React.FC<IProps> = ({ item, handleAddToCartClick }) => {
 
       <div className={s.product__buttons}>
         <Link to={Routes.PRODUCT_DEATAILS}>
-          <button
-            onClick={() => handleDetailButtonClick(item.id)}
-            className={s.product__buttons__detailBtn}
-          >
+          <button onClick={handleDetailButtonClick} className={s.product__buttons__detailBtn}>
             DETAIL PAGE
           </button>
         </Link>
-        <button
-          onClick={() => handleAddToCartClick(item)}
-          className={s.product__buttons__addToCartBtn}
-        >
+        <button onClick={handleAddToCartClick} className={s.product__buttons__addToCartBtn}>
           ADD TO CART
         </button>
       </div>

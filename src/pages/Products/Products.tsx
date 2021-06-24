@@ -1,7 +1,6 @@
-import { ADD_TO_CART, CHANGE_CART_COUNTS, FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
-import { IProduct } from "common/types/types";
+import { FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
 import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import { getProducts } from "../../api/productsRequests";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { ReactComponent as ArrowDown } from "../../assets/chevron-down-solid.svg";
@@ -22,18 +21,11 @@ export const Products: React.FC = () => {
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
 
-  const scrollToBody = () => {
+  const scrollToBody = useCallback(() => {
     if (body.current) {
       body.current.scrollIntoView({ block: "start", behavior: "smooth" });
     }
-  };
-  const handleAddToCartClick = (product: IProduct) => {
-    dispatch({ type: ADD_TO_CART, payload: { product, operator: "+", amount: 1 } });
-    dispatch({
-      type: CHANGE_CART_COUNTS,
-      payload: { count: 1, sum: product.price, operator: "+" },
-    });
-  };
+  }, []);
 
   const loadMoreHandler = () => {
     dispatch({ type: LOAD_MORE });
@@ -55,7 +47,7 @@ export const Products: React.FC = () => {
         </div>
       </div>
       <div className={s.products__body} ref={body}>
-        <ProductsList productsList={products} handleAddToCartClick={handleAddToCartClick} />
+        <ProductsList productsList={products} />
       </div>
       {products.length !== totalItems && (
         <div className={s.products__loadMore} onClick={loadMoreHandler}>

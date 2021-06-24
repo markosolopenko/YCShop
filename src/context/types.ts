@@ -1,4 +1,4 @@
-import { IProduct, IProductsInCart } from "../common/types/types";
+import { IProduct, IProductsInCart } from "../types/types";
 
 export interface IProductsContext {
   products: IProduct[];

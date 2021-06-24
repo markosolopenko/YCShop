@@ -11,7 +11,7 @@ import {
 import { addToCart } from "helpers/addToCart";
 import { changeCartCounts } from "helpers/changeCartCounts";
 import { IProductsContext } from "./types";
-import { IProduct, IProducts } from "../common/types/types";
+import { IProduct, IProducts } from "../types/types";
 
 type Action =
   | { type: "FETCH_PRODUCTS"; payload: IProducts }

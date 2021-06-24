@@ -1,4 +1,4 @@
-import { IProduct, IProducts } from "common/types/types";
+import { IProduct, IProducts } from "../types/types";
 import { axiosInstance } from "./api";
 
 export const getProducts = async (page: number, perPage: number): Promise<IProducts[] | Error> => {

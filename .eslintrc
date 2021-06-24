@@ -5,6 +5,7 @@
     "react/react-in-jsx-scope": 0,
     "sort-imports": 0,
     "prettier/prettier": 0,
+    "@typescript-eslint/no-unused-vars": 1,
     "padding-line-between-statements": [
       "error",
       { "blankLine": "any", "prev": "multiline-block-like", "next": "multiline-block-like" }
