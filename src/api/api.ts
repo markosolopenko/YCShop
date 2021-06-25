@@ -1,7 +1,6 @@
 import axios from "axios";
-
-const { REACT_APP_ROOT } = process.env;
+import { API_URL } from "../constants/endpoints";
 
 export const axiosInstance = axios.create({
-  baseURL: `${REACT_APP_ROOT}`,
+  baseURL: `${API_URL}`,
 });

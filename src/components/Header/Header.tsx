@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { linksStyles } from "constants/styles";
+import { Routes } from "constants/routes";
 import { TNavbarItems } from "./types";
 import { Cart } from "../Cart/Cart";
 
@@ -40,7 +41,7 @@ export const Header: React.FC = () => {
             </Link>
           );
         })}
-        <Cart />
+        {location.pathname !== Routes.PRODUCTS_CART && <Cart />}
       </ul>
     </div>
   );

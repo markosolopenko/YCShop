@@ -14,6 +14,7 @@ export const ProductsCart: React.FC = () => {
   const { minus } = operators;
 
   const { productsAddedToCart, allItemsInCartSum } = state;
+
   const handleDeleteProduct = (item: IProductsInCart) => {
     dispatch({ type: DELETE_ITEM_FROM_CART, payload: item.product.id });
     dispatch({
