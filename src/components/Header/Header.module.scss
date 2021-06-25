@@ -1,0 +1,41 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #0a9396;
+
+  height: 70px;
+  &__logo {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    border-bottom: 3px solid orange;
+    border-top: 3px solid orange;
+    padding: 6px;
+    border-radius: 5px;
+    margin-left: 20px;
+  }
+  &__navbar {
+    display: flex;
+
+    list-style: none;
+
+    height: 100%;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+
+      font-size: 16px;
+      &:hover {
+        background-color: #f7c594;
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+.products {
+  &__top {
+    background-image: url("../../assets/ecommerce-shopping-retail-ss-1920.jpeg");
+    height: calc(100vh - 70px);
+
+    &__aboveImg {
+      background-color: rgba($color: #000000, $alpha: 0.5);
+      width: inherit;
+      height: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &__content {
+        text-align: center;
+        &__text {
+          color: white;
+          font-size: 55px;
+          font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        }
+        &__button {
+          border: 2px solid white;
+          color: black;
+          outline: none;
+          box-shadow: 1px 2px 12px 2px white;
+          background: white;
+          margin-top: 20px;
+          border-radius: 5px;
+          padding: 15px 50px;
+          cursor: pointer;
+
+          transition: all 0.3s linear;
+
+          &:hover {
+            background: none;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  &__body {
+  }
+  &__loadMore {
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+    background-color: #bb3e03;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    &__arrow {
+      width: 20px;
+      height: 20px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.logo {
+  color: orange;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bold;
+  font-size: 55px;
+}

@@ -1,6 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import App from "./app/App";
+import { ProductsContextProvider } from "./context/ProductsContext";
+
+ReactDOM.render(
+  <BrowserRouter>
+    <ProductsContextProvider>
+      <App />
+    </ProductsContextProvider>
+  </BrowserRouter>,
+  document.getElementById("root")
+);

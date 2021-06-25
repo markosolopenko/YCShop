@@ -1,0 +1,43 @@
+.cart-component {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+}
+.cart {
+  display: flex;
+  background-color: rgb(243, 185, 77);
+  padding: 15px;
+  border-radius: 30px;
+
+  position: relative;
+  &:hover {
+    background-color: orange;
+  }
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+  }
+  &__counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+
+    border-radius: 20px;
+
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+  }
+}
+
+.amountOfMoney {
+  color: white;
+  padding: 4px;
+}
