@@ -1,12 +1,13 @@
-import { ADD_TO_CART, CHANGE_CART_COUNTS, FETCH_PRODUCT_BY_ID } from "actionTypes/products";
 import { Routes } from "constants/routes";
-import { ProductsContextDispatch } from "context/ProductsContext";
+
 import { formatMoney } from "helpers/formatMoney";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { operators } from "constants/operators";
+import { useDispatch } from "react-redux";
+import { fetchProductByIdThunk } from "features/products/thunks";
+import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
 import { IProduct } from "../../types/types";
-import { getProductById } from "../../api/productsRequests";
 
 import s from "./Product.module.scss";
 
@@ -15,21 +16,16 @@ type IProps = {
 };
 
 export const Product: React.FC<IProps> = ({ item }) => {
-  const dispatch = useContext(ProductsContextDispatch);
+  const dispatch = useDispatch();
   const { plus } = operators;
 
   const handleDetailButtonClick = useCallback(() => {
-    getProductById(item.id).then((data) => {
-      dispatch({ type: FETCH_PRODUCT_BY_ID, payload: data });
-    });
+    dispatch(fetchProductByIdThunk(item.id));
   }, []);
 
   const handleAddToCartClick: () => void = useCallback(() => {
-    dispatch({ type: ADD_TO_CART, payload: { product: item, operator: plus, amount: 1 } });
-    dispatch({
-      type: CHANGE_CART_COUNTS,
-      payload: { count: 1, sum: item.price, operator: plus },
-    });
+    dispatch(addToCartAction({ product: item, operator: plus, amount: 1 }));
+    dispatch(changeCartCountsAtion({ count: 1, sum: item.price, operator: plus }));
   }, []);
 
   return (

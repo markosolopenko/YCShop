@@ -1,7 +1,7 @@
 import { Routes } from "constants/routes";
-import { ProductsContextState } from "context/ProductsContext";
+import { RootState } from "core/store";
 import { formatMoney } from "helpers/formatMoney";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as CartIcon } from "../../assets/cart.svg";
@@ -9,7 +9,9 @@ import { ReactComponent as CartIcon } from "../../assets/cart.svg";
 import s from "./Cart.module.scss";
 
 export const Cart: React.FC = () => {
-  const { allItemsInCartAmount, allItemsInCartSum } = useContext(ProductsContextState);
+  const { allItemsInCartAmount, allItemsInCartSum } = useSelector(
+    (state: RootState) => state.products
+  );
 
   return (
     <div className={s["cart-component"]}>

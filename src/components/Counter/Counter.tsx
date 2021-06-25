@@ -1,7 +1,7 @@
-import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
 import { operators } from "constants/operators";
-import { ProductsContextDispatch } from "context/ProductsContext";
-import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
+import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { IProduct } from "../../types/types";
 import s from "./Counter.module.scss";
 
@@ -15,7 +15,7 @@ type IProps = {
 export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onChange }) => {
   const [counter, setCounter] = useState(startValue);
 
-  const dispatch = useContext(ProductsContextDispatch);
+  const dispatch = useDispatch();
 
   const { plus, minus } = operators;
 
@@ -28,11 +28,8 @@ export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onCh
       setCounter(counter - 1);
 
       if (addToCart) {
-        dispatch({ type: ADD_TO_CART, payload: { product, operator: minus, amount: counter } });
-        dispatch({
-          type: CHANGE_CART_COUNTS,
-          payload: { count: 1, sum: product.price, operator: minus },
-        });
+        dispatch(addToCartAction({ product, operator: minus, amount: 1 }));
+        dispatch(changeCartCountsAtion({ count: 1, sum: product.price, operator: minus }));
       }
     }
   }, [counter]);
@@ -41,11 +38,8 @@ export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onCh
     setCounter(counter + 1);
 
     if (addToCart) {
-      dispatch({ type: ADD_TO_CART, payload: { product, operator: plus, amount: 1 } });
-      dispatch({
-        type: CHANGE_CART_COUNTS,
-        payload: { count: 1, sum: product.price, operator: plus },
-      });
+      dispatch(addToCartAction({ product, operator: plus, amount: 1 }));
+      dispatch(changeCartCountsAtion({ count: 1, sum: product.price, operator: plus }));
     }
   }, [counter]);
 

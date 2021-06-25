@@ -1,22 +1,21 @@
-import { FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
-import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { getProducts } from "../../api/productsRequests";
+import { useCallback, useEffect, useRef } from "react";
+import { fetchProductsThunk } from "features/products/thunks";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "core/store";
+import { loadMoreProducts } from "features/products/productsSlice";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { ReactComponent as ArrowDown } from "../../assets/chevron-down-solid.svg";
 
 import s from "./Products.module.scss";
 
 export const Products: React.FC = () => {
-  const state = useContext(ProductsContextState);
-  const dispatch = useContext(ProductsContextDispatch);
-
-  const { products, currentPage, perPage, totalItems } = state;
+  const { products, currentPage, perPage, totalItems } = useSelector(
+    (state: RootState) => state.products
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getProducts(currentPage, perPage).then((data) => {
-      dispatch({ type: FETCH_PRODUCTS, payload: data });
-    });
+    dispatch(fetchProductsThunk({ page: currentPage, perPage }));
   }, [currentPage]);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
@@ -28,7 +27,7 @@ export const Products: React.FC = () => {
   }, []);
 
   const loadMoreHandler = useCallback(() => {
-    dispatch({ type: LOAD_MORE });
+    dispatch(loadMoreProducts());
   }, []);
 
   return (

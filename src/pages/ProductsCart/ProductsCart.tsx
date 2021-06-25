@@ -1,26 +1,31 @@
-import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { useCallback, useContext } from "react";
-import { CHANGE_CART_COUNTS, DELETE_ITEM_FROM_CART } from "actionTypes/products";
+import { useCallback } from "react";
 import { formatMoney } from "helpers/formatMoney";
 import { operators } from "constants/operators";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "core/store";
+import { changeCartCountsAtion, deleteFromCart } from "features/products/productsSlice";
 import { IProductsInCart } from "../../types/types";
 import { Counter } from "../../components/Counter/Counter";
 import { ReactComponent as DeleteIcon } from "../../assets/trash-alt-solid.svg";
 import s from "./ProductsCart.module.scss";
 
 export const ProductsCart: React.FC = () => {
-  const state = useContext(ProductsContextState);
-  const dispatch = useContext(ProductsContextDispatch);
   const { minus } = operators;
 
-  const { productsAddedToCart, allItemsInCartSum } = state;
+  const { productsAddedToCart, allItemsInCartSum } = useSelector(
+    (state: RootState) => state.products
+  );
+  const dispatch = useDispatch();
 
   const handleDeleteProduct = useCallback((item: IProductsInCart) => {
-    dispatch({ type: DELETE_ITEM_FROM_CART, payload: item.product.id });
-    dispatch({
-      type: CHANGE_CART_COUNTS,
-      payload: { count: item.amount, sum: item.amount * item.product.price, operator: minus },
-    });
+    dispatch(deleteFromCart(item.product.id));
+    dispatch(
+      changeCartCountsAtion({
+        count: item.amount,
+        sum: item.amount * item.product.price,
+        operator: minus,
+      })
+    );
   }, []);
 
   const handleInputChange = useCallback((inputValue: number) => {

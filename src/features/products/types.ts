@@ -1,6 +1,7 @@
-import { IProduct, IProductsInCart } from "../types/types";
+import { IProduct, IProductsInCart } from "../../types/types";
 
-export interface IProductsContext {
+export interface IProductsSliceState {
+  status: string | null;
   products: IProduct[];
   product: IProduct | null;
   productsAddedToCart: IProductsInCart[];
@@ -9,4 +10,5 @@ export interface IProductsContext {
   totalItems: number;
   allItemsInCartAmount: number;
   allItemsInCartSum: number;
+  error: string | null;
 }
