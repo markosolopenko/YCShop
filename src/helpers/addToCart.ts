@@ -12,7 +12,7 @@ export const addToCart = (
   for (let i = 0; i < productsInCart.length; i++) {
     if (productsInCart[i].product.id === product.id) {
       if (operator === plus) {
-        productsInCart[i].amount += amount;
+        productsInCart[i].amount += 1;
       } else if (operator === minus) {
         productsInCart[i].amount -= 1;
       } else {

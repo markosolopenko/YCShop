@@ -55,12 +55,7 @@ export const ProductDetails: React.FC = () => {
                 {new Date(product.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <Counter
-              startValue={value}
-              product={product}
-              addToCart={false}
-              onChange={handelInputChange}
-            />
+            <Counter startValue={value} onChange={handelInputChange} />
             <div
               className={s["prodcut-detils__product__body__addToCart"]}
               onClick={handleAddToCartClick}

@@ -41,12 +41,7 @@ export const ProductInCart: React.FC<IProps> = ({ item }) => {
         <span>Name: </span>
         {item.product.name}
       </div>
-      <Counter
-        startValue={value}
-        product={item.product}
-        addToCart={true}
-        onChange={handleInputChange}
-      />
+      <Counter startValue={value} onChange={handleInputChange} />
       <div className={s["product-in-cart__total"]}>
         {item.product.price}$ x {item.amount} ={formatMoney(item.product.price * item.amount)}
       </div>
