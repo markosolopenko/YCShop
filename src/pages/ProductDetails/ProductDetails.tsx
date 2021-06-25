@@ -9,9 +9,8 @@ import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
-  const [value, setValue] = useState(0);
-
   const { product } = useSelector((state: RootState) => state.products);
+  const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const { plus } = operators;
 
@@ -21,11 +20,8 @@ export const ProductDetails: React.FC = () => {
 
   const handleAddToCartClick = useCallback(() => {
     if (value > 0 && product) {
-      dispatch(
-        changeCartCountsAtion({ count: value, sum: value * product?.price, operator: plus })
-      );
-
       dispatch(addToCartAction({ product, operator: plus, amount: value }));
+      dispatch(changeCartCountsAtion());
     }
     setValue(0);
   }, [value]);

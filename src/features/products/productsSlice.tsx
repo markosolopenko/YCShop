@@ -26,20 +26,10 @@ const productsSlice = createSlice({
       const { product, operator, amount } = action.payload;
       state.productsAddedToCart = addToCart(state.productsAddedToCart, product, operator, amount);
     },
-    changeCartCountsAtion(state, action) {
-      const { count, sum, operator } = action.payload;
-      const previousState: { count: number; sum: number } = {
-        count: state.allItemsInCartAmount,
-        sum: state.allItemsInCartSum,
-      };
-      const { allItemsInCartAmount, allItemsInCartSum } = changeCartCounts(
-        count,
-        sum,
-        operator,
-        previousState
-      );
-      state.allItemsInCartAmount = allItemsInCartAmount;
-      state.allItemsInCartSum = allItemsInCartSum;
+    changeCartCountsAtion(state) {
+      const { sum, count } = changeCartCounts(state.productsAddedToCart);
+      state.allItemsInCartAmount = count;
+      state.allItemsInCartSum = sum;
     },
     loadMoreProducts(state) {
       state.currentPage += 1;

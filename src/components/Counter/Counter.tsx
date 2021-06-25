@@ -1,6 +1,6 @@
 import { operators } from "constants/operators";
 import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { IProduct } from "../../types/types";
 import s from "./Counter.module.scss";
@@ -13,38 +13,32 @@ type IProps = {
 };
 
 export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onChange }) => {
-  const [counter, setCounter] = useState(startValue);
-
   const dispatch = useDispatch();
 
   const { plus, minus } = operators;
 
-  useEffect(() => {
-    onChange(counter);
-  }, [counter]);
-
   const handleMinusClick = useCallback(() => {
-    if (counter > 1) {
-      setCounter(counter - 1);
+    if (startValue > 1) {
+      onChange(startValue - 1);
 
       if (addToCart) {
         dispatch(addToCartAction({ product, operator: minus, amount: 1 }));
-        dispatch(changeCartCountsAtion({ count: 1, sum: product.price, operator: minus }));
+        dispatch(changeCartCountsAtion());
       }
     }
-  }, [counter]);
+  }, [startValue]);
 
   const handlePlusClick = useCallback(() => {
-    setCounter(counter + 1);
+    onChange(startValue + 1);
 
     if (addToCart) {
       dispatch(addToCartAction({ product, operator: plus, amount: 1 }));
-      dispatch(changeCartCountsAtion({ count: 1, sum: product.price, operator: plus }));
+      dispatch(changeCartCountsAtion());
     }
-  }, [counter]);
+  }, [startValue]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCounter(Number(e.target.value));
+    onChange(Number(e.target.value));
   };
 
   return (

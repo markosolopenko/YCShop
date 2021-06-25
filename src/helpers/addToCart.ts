@@ -8,13 +8,15 @@ export const addToCart = (
   amount: number
 ): IProductsInCart[] => {
   let flag = false;
-  const { plus } = operators;
+  const { plus, minus } = operators;
   for (let i = 0; i < productsInCart.length; i++) {
     if (productsInCart[i].product.id === product.id) {
       if (operator === plus) {
         productsInCart[i].amount += amount;
-      } else {
+      } else if (operator === minus) {
         productsInCart[i].amount -= 1;
+      } else {
+        productsInCart[i].amount = amount;
       }
       flag = true;
       break;

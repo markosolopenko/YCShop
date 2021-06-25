@@ -25,7 +25,7 @@ export const Product: React.FC<IProps> = ({ item }) => {
 
   const handleAddToCartClick: () => void = useCallback(() => {
     dispatch(addToCartAction({ product: item, operator: plus, amount: 1 }));
-    dispatch(changeCartCountsAtion({ count: 1, sum: item.price, operator: plus }));
+    dispatch(changeCartCountsAtion());
   }, []);
 
   return (
