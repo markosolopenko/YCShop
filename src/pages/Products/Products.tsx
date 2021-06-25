@@ -27,9 +27,9 @@ export const Products: React.FC = () => {
     }
   }, []);
 
-  const loadMoreHandler = () => {
+  const loadMoreHandler = useCallback(() => {
     dispatch({ type: LOAD_MORE });
-  };
+  }, []);
 
   return (
     <div className={s.products}>

@@ -24,13 +24,13 @@ export const Product: React.FC<IProps> = ({ item }) => {
     });
   }, []);
 
-  const handleAddToCartClick: () => void = () => {
+  const handleAddToCartClick: () => void = useCallback(() => {
     dispatch({ type: ADD_TO_CART, payload: { product: item, operator: plus, amount: 1 } });
     dispatch({
       type: CHANGE_CART_COUNTS,
       payload: { count: 1, sum: item.price, operator: plus },
     });
-  };
+  }, []);
 
   return (
     <div className={s.product}>

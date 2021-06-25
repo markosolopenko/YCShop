@@ -1,5 +1,5 @@
 import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { CHANGE_CART_COUNTS, DELETE_ITEM_FROM_CART } from "actionTypes/products";
 import { formatMoney } from "helpers/formatMoney";
 import { operators } from "constants/operators";
@@ -15,16 +15,17 @@ export const ProductsCart: React.FC = () => {
 
   const { productsAddedToCart, allItemsInCartSum } = state;
 
-  const handleDeleteProduct = (item: IProductsInCart) => {
+  const handleDeleteProduct = useCallback((item: IProductsInCart) => {
     dispatch({ type: DELETE_ITEM_FROM_CART, payload: item.product.id });
     dispatch({
       type: CHANGE_CART_COUNTS,
       payload: { count: item.amount, sum: item.amount * item.product.price, operator: minus },
     });
-  };
-  const handleInputChange = (inputValue: number) => {
+  }, []);
+
+  const handleInputChange = useCallback((inputValue: number) => {
     return inputValue;
-  };
+  }, []);
   return (
     <div className={s["products-cart"]}>
       <div className={s["products-cart__box"]}>
