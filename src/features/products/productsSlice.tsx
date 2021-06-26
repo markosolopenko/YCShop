@@ -11,7 +11,7 @@ const initialState: IProductsSliceState = {
   product: null,
   productsAddedToCart: [],
   currentPage: 1,
-  perPage: 50,
+  perPage: 10,
   totalItems: 0,
   allItemsInCartAmount: 0,
   allItemsInCartSum: 0,
@@ -52,6 +52,9 @@ const productsSlice = createSlice({
       state.minPrice = min;
       state.maxPrice = max;
     },
+    changeAmountOfPorductsPerPage(state, action) {
+      state.perPage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,7 +65,7 @@ const productsSlice = createSlice({
         const { items, totalItems } = action.payload;
         state.status = FULFILLED;
         state.products = items;
-        state.totalItems = Math.round(totalItems / 10);
+        state.totalItems = Math.round(totalItems / state.perPage);
       })
       .addCase(fetchProductsThunk.rejected, (state) => {
         state.error = "Error fetchProdcuts";
@@ -95,4 +98,5 @@ export const {
   changeCartCountsAtion,
   loadMoreProducts,
   setRangePrices,
+  changeAmountOfPorductsPerPage,
 } = productsSlice.actions;

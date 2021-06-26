@@ -4,10 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "core/store";
 import { loadMoreProducts } from "features/products/productsSlice";
 
-import { FULFILLED, PENDING } from "constants/status";
-import { Loader } from "components/Loader/Loader";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
+import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
 
 import { FilterByPrice } from "../../components/FilterByPrice/FilterByPrice";
 import { Pagination } from "../../components/Pagination/Pagination";
@@ -15,16 +14,8 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import s from "./Products.module.scss";
 
 export const Products: React.FC = () => {
-  const {
-    products,
-    currentPage,
-    perPage,
-    totalItems,
-    selectedOrigins,
-    minPrice,
-    maxPrice,
-    status,
-  } = useSelector((state: RootState) => state.products);
+  const { products, currentPage, perPage, totalItems, selectedOrigins, minPrice, maxPrice } =
+    useSelector((state: RootState) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,8 +28,11 @@ export const Products: React.FC = () => {
         maxPrice,
       })
     );
+  }, [currentPage, selectedOrigins, minPrice, perPage]);
+
+  useEffect(() => {
     dispatch(getOriginsThunk());
-  }, [currentPage, selectedOrigins, minPrice]);
+  }, []);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
 
@@ -51,10 +45,6 @@ export const Products: React.FC = () => {
   const handlePaginationChange = (page: number) => {
     dispatch(loadMoreProducts(page));
   };
-
-  if (status === PENDING) {
-    return <Loader />;
-  }
 
   return (
     <div className={s.products}>
@@ -71,7 +61,9 @@ export const Products: React.FC = () => {
           </div>
         </div>
       </div>
+
       <div className={s.products__filters}>
+        <FilterProductsPerPage />
         <FilterByOrigins />
         <FilterByPrice />
       </div>

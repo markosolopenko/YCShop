@@ -12,11 +12,11 @@ export type TGetOriginsParams = {
 };
 
 export type TGetProductsParams = {
-  page: number;
-  perPage: number;
-  origins: ISelectedOrigins[];
-  minPrice: string;
-  maxPrice: string;
+  page?: number;
+  perPage?: number;
+  origins: ISelectedOrigins[] | [];
+  minPrice?: string;
+  maxPrice?: string;
 };
 
 export const getProducts = async ({

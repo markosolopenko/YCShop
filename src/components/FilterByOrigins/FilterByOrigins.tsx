@@ -4,6 +4,7 @@ import { ISelectedOrigins } from "features/products/types";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import s from "./FilterByOrigins.module.scss";
 
 export const FilterByOrigins: React.FC = () => {
   const { origins } = useSelector((state: RootState) => state.products);
@@ -25,13 +26,11 @@ export const FilterByOrigins: React.FC = () => {
   }, []);
 
   return (
-    <div className="filter-by-origins" style={{ flex: 0.3 }}>
-      <div style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "5px" }}>
-        Filter By Origin
-      </div>
+    <div className={s["filter-by-origins"]}>
+      <div className={s["filter-by-origins__label"]}>Filter By Origin</div>
       <Select
         isMulti
-        name="colors"
+        name="origins"
         options={options}
         className="basic-multi-select"
         classNamePrefix="select"
