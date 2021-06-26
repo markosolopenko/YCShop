@@ -38,7 +38,11 @@
       }
     }
   }
-  &__body {
+  &__filters {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
   }
   &__loadMore {
     width: 200px;

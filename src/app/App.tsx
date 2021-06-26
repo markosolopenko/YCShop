@@ -13,6 +13,7 @@ import s from "./App.module.scss";
 
 export const App: React.FC = () => {
   const { PRODUCTS, PRODUCT_DEATAILS, PRODUCTS_CART } = Routes;
+
   return (
     <div className={s.app}>
       <Header />

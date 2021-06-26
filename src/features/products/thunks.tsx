@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getProductById, getProducts } from "api/productsRequests";
+import { getOrigins, getProductById, getProducts, TGetProductsParams } from "api/productsRequests";
 
 export const fetchProductsThunk = createAsyncThunk(
   "products/getProducts",
-  async (data: { page: number; perPage: number }) => {
-    const { page, perPage } = data;
-    const response = await getProducts(page, perPage);
+  async (data: TGetProductsParams) => {
+    const { page, perPage, origins, minPrice, maxPrice } = data;
+    const response = await getProducts({ page, perPage, origins, minPrice, maxPrice });
 
     return response.data;
   }
@@ -18,3 +18,8 @@ export const fetchProductByIdThunk = createAsyncThunk(
     return response.data;
   }
 );
+
+export const getOriginsThunk = createAsyncThunk("products/getOrigins", async () => {
+  const response = await getOrigins();
+  return response.data;
+});

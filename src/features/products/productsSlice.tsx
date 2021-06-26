@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PENDING, FULFILLED, REJECTED } from "constants/status";
 import { addToCart } from "helpers/addToCart";
 import { changeCartCounts } from "helpers/changeCartCounts";
-import { fetchProductByIdThunk, fetchProductsThunk } from "./thunks";
+import { fetchProductByIdThunk, fetchProductsThunk, getOriginsThunk } from "./thunks";
 import { IProductsSliceState } from "./types";
 
 const initialState: IProductsSliceState = {
@@ -16,6 +16,10 @@ const initialState: IProductsSliceState = {
   allItemsInCartAmount: 0,
   allItemsInCartSum: 0,
   error: null,
+  origins: [],
+  selectedOrigins: [],
+  minPrice: "",
+  maxPrice: "",
 };
 
 const productsSlice = createSlice({
@@ -31,13 +35,22 @@ const productsSlice = createSlice({
       state.allItemsInCartAmount = count;
       state.allItemsInCartSum = sum;
     },
-    loadMoreProducts(state) {
-      state.currentPage += 1;
+    loadMoreProducts(state, action) {
+      state.currentPage = action.payload;
     },
     deleteFromCart(state, action) {
       state.productsAddedToCart = state.productsAddedToCart.filter(
         (item) => item.product.id !== action.payload
       );
+    },
+    setSlectedOrigins(state, action) {
+      state.selectedOrigins = action.payload;
+    },
+    setRangePrices(state, action) {
+      const { min, max } = action.payload;
+
+      state.minPrice = min;
+      state.maxPrice = max;
     },
   },
   extraReducers: (builder) => {
@@ -48,8 +61,8 @@ const productsSlice = createSlice({
       .addCase(fetchProductsThunk.fulfilled, (state, action) => {
         const { items, totalItems } = action.payload;
         state.status = FULFILLED;
-        state.products = [...state.products, ...items];
-        state.totalItems = totalItems;
+        state.products = items;
+        state.totalItems = Math.round(totalItems / 10);
       })
       .addCase(fetchProductsThunk.rejected, (state) => {
         state.error = "Error fetchProdcuts";
@@ -67,10 +80,19 @@ const productsSlice = createSlice({
         state.status = REJECTED;
         state.error = "Error fetchProductById";
       });
+    builder.addCase(getOriginsThunk.fulfilled, (state, action) => {
+      state.origins = action.payload.items;
+    });
   },
 });
 
 export default productsSlice.reducer;
 
-export const { addToCartAction, deleteFromCart, changeCartCountsAtion, loadMoreProducts } =
-  productsSlice.actions;
+export const {
+  setSlectedOrigins,
+  addToCartAction,
+  deleteFromCart,
+  changeCartCountsAtion,
+  loadMoreProducts,
+  setRangePrices,
+} = productsSlice.actions;

@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
     <div className={s.header}>
       <div className={s.header__logo}>Yalantis Shop</div>
 
-      <ul className={s.header__navbar}>
+      <div className={s.header__navbar}>
         {navbarItems.map((item) => {
           return (
             <Link
@@ -37,12 +37,12 @@ export const Header: React.FC = () => {
                 backgroundColor: pathname === item.route ? ACIVE_LINK : NOT_ACTIVE,
               }}
             >
-              <li>{item.content}</li>
+              <div>{item.content}</div>
             </Link>
           );
         })}
         {location.pathname !== Routes.PRODUCTS_CART && <Cart />}
-      </ul>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,32 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__arrow {
+    background-color: red;
+    padding: 5px;
+    border-radius: 10px;
+    &__icon {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  &__pages {
+    display: flex;
+
+    &__page {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: orange;
+      color: white;
+      border-radius: 4px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
