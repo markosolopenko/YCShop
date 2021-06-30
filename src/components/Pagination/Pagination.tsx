@@ -1,6 +1,6 @@
-import { paginationStyles } from "constants/styles";
 import { paginationChange } from "helpers/paginationGenerator";
 import React, { useCallback, useEffect, useState } from "react";
+import cn from "classnames";
 import { ReactComponent as ArrowLeft } from "../../assets/arrow-left.svg";
 import { ReactComponent as ArrowRight } from "../../assets/arrow-right.svg";
 import s from "./Pagination.module.scss";
@@ -13,7 +13,6 @@ export interface IPaginationProps {
 
 export const Pagination: React.FC<IPaginationProps> = ({ onChange, activePage, totalPages }) => {
   const [paginItems, setPaginItems] = useState<Array<string | number>>([]);
-  const { ACTIVE_PAGE, NOT_ACTIVE_PAGE, PAGE_BORDER } = paginationStyles;
 
   const handleArrowForward = useCallback(() => {
     if (activePage < totalPages) {
@@ -46,12 +45,11 @@ export const Pagination: React.FC<IPaginationProps> = ({ onChange, activePage, t
         {paginItems.map((item, index) => {
           return (
             <div
-              className={s.pagination__pages__page}
+              className={cn(s.pagination__pages__page, {
+                [s.active]: item === activePage,
+                [s.border]: item !== "...",
+              })}
               key={index}
-              style={{
-                backgroundColor: item === activePage ? ACTIVE_PAGE : NOT_ACTIVE_PAGE,
-                border: item !== "..." ? PAGE_BORDER : "none",
-              }}
               onClick={() => handlePageClick(item)}
             >
               {item}

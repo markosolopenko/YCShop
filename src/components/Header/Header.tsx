@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 
-import { linksStyles } from "constants/styles";
 import { Routes } from "constants/routes";
+import cn from "classnames";
 import { TNavbarItems } from "./types";
 import { Cart } from "../Cart/Cart";
 
@@ -14,7 +14,6 @@ const navbarItems: TNavbarItems[] = [
 
 export const Header: React.FC = () => {
   const location = useLocation();
-  const { ACIVE_LINK, NOT_ACTIVE } = linksStyles;
 
   return (
     <div className={s.header}>
@@ -26,10 +25,9 @@ export const Header: React.FC = () => {
             <Link
               to={item.route}
               key={item.id}
-              className={s.header__navbar__item}
-              style={{
-                backgroundColor: location.pathname === item.route ? ACIVE_LINK : NOT_ACTIVE,
-              }}
+              className={cn(s.header__navbar__item, {
+                [s.active]: location.pathname === item.route,
+              })}
             >
               <div>{item.content}</div>
             </Link>
