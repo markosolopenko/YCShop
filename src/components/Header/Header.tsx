@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { linksStyles } from "constants/styles";
@@ -14,13 +13,8 @@ const navbarItems: TNavbarItems[] = [
 ];
 
 export const Header: React.FC = () => {
-  const [pathname, setPathName] = useState("");
   const location = useLocation();
   const { ACIVE_LINK, NOT_ACTIVE } = linksStyles;
-
-  useEffect(() => {
-    setPathName(location.pathname);
-  }, [location.pathname]);
 
   return (
     <div className={s.header}>
@@ -34,7 +28,7 @@ export const Header: React.FC = () => {
               key={item.id}
               className={s.header__navbar__item}
               style={{
-                backgroundColor: pathname === item.route ? ACIVE_LINK : NOT_ACTIVE,
+                backgroundColor: location.pathname === item.route ? ACIVE_LINK : NOT_ACTIVE,
               }}
             >
               <div>{item.content}</div>

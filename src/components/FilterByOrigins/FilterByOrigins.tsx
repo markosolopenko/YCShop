@@ -1,5 +1,5 @@
-import { RootState } from "core/store";
 import { setSlectedOrigins } from "features/products/productsSlice";
+import { getOrigins } from "features/products/selectors";
 import { ISelectedOrigins } from "features/products/types";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import Select from "react-select";
 import s from "./FilterByOrigins.module.scss";
 
 export const FilterByOrigins: React.FC = () => {
-  const { origins } = useSelector((state: RootState) => state.products);
+  const origins = useSelector(getOrigins);
   const dispatch = useDispatch();
   const options = useMemo(
     () =>

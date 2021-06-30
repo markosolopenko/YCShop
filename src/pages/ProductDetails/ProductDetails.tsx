@@ -2,14 +2,14 @@ import { useCallback, useState } from "react";
 import { formatMoney } from "helpers/formatMoney";
 import { operators } from "constants/operators";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "core/store";
 import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
+import { getProduct } from "features/products/selectors";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
-  const { product } = useSelector((state: RootState) => state.products);
+  const product = useSelector(getProduct);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const { plus } = operators;

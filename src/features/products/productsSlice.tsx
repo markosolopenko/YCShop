@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PENDING, FULFILLED, REJECTED } from "constants/status";
+
 import { addToCart } from "helpers/addToCart";
 import { changeCartCounts } from "helpers/changeCartCounts";
+
 import { fetchProductByIdThunk, fetchProductsThunk, getOriginsThunk } from "./thunks";
 import { IProductsSliceState } from "./types";
 
@@ -24,7 +26,7 @@ const initialState: IProductsSliceState = {
 
 const productsSlice = createSlice({
   name: "products",
-  initialState,
+  initialState: initialState,
   reducers: {
     addToCartAction(state, action) {
       const { product, operator, amount } = action.payload;
@@ -65,7 +67,7 @@ const productsSlice = createSlice({
         const { items, totalItems } = action.payload;
         state.status = FULFILLED;
         state.products = items;
-        state.totalItems = Math.round(totalItems / state.perPage);
+        state.totalItems = totalItems;
       })
       .addCase(fetchProductsThunk.rejected, (state) => {
         state.error = "Error fetchProdcuts";

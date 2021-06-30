@@ -4,7 +4,6 @@ import s from "./Counter.module.scss";
 
 type IProps = {
   startValue: number;
-
   onChange: (inputValue: number) => void;
 };
 
@@ -19,9 +18,9 @@ export const Counter: React.FC<IProps> = ({ startValue, onChange }) => {
     onChange(startValue + 1);
   }, [startValue]);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     onChange(Number(e.target.value));
-  };
+  }, []);
 
   return (
     <div className={s.counter}>

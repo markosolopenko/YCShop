@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import { fetchProductsThunk, getOriginsThunk } from "features/products/thunks";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "core/store";
 import { loadMoreProducts } from "features/products/productsSlice";
 
+import { getParams, getProductsList, getRange, getStatus } from "features/products/selectors";
+import { PENDING } from "constants/status";
+import { Loader } from "components/Loader/Loader";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
 import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
@@ -14,21 +16,16 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import s from "./Products.module.scss";
 
 export const Products: React.FC = () => {
-  const { products, currentPage, perPage, totalItems, selectedOrigins, minPrice, maxPrice } =
-    useSelector((state: RootState) => state.products);
+  const products = useSelector(getProductsList);
+  const range = useSelector(getRange);
+  const params = useSelector(getParams);
+  const status = useSelector(getStatus);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      fetchProductsThunk({
-        page: currentPage,
-        perPage,
-        origins: selectedOrigins,
-        minPrice,
-        maxPrice,
-      })
-    );
-  }, [currentPage, selectedOrigins, minPrice, perPage]);
+    dispatch(fetchProductsThunk(params));
+  }, [params]);
 
   useEffect(() => {
     dispatch(getOriginsThunk());
@@ -45,6 +42,10 @@ export const Products: React.FC = () => {
   const handlePaginationChange = (page: number) => {
     dispatch(loadMoreProducts(page));
   };
+
+  if (status === PENDING) {
+    return <Loader />;
+  }
 
   return (
     <div className={s.products}>
@@ -70,11 +71,9 @@ export const Products: React.FC = () => {
       <div className={s.products__body} ref={body}>
         <ProductsList productsList={products} />
       </div>
-      <Pagination
-        onChange={handlePaginationChange}
-        activePage={currentPage}
-        totalPages={totalItems}
-      />
+      {range > 0 && (
+        <Pagination onChange={handlePaginationChange} activePage={params.page} totalPages={range} />
+      )}
     </div>
   );
 };

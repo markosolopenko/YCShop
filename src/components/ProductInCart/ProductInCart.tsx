@@ -23,7 +23,7 @@ export const ProductInCart: React.FC<IProps> = ({ item }) => {
 
   const dispatch = useDispatch();
 
-  const handleDeleteProduct = useCallback((item: IProductsInCart) => {
+  const handleDeleteProduct = useCallback(() => {
     dispatch(deleteFromCart(item.product.id));
     dispatch(changeCartCountsAtion());
   }, []);
@@ -45,7 +45,7 @@ export const ProductInCart: React.FC<IProps> = ({ item }) => {
       <div className={s["product-in-cart__total"]}>
         {item.product.price}$ x {item.amount} ={formatMoney(item.product.price * item.amount)}
       </div>
-      <div className={s["product-in-cart__delete"]} onClick={() => handleDeleteProduct(item)}>
+      <div className={s["product-in-cart__delete"]} onClick={handleDeleteProduct}>
         <DeleteIcon className={s["product-in-cart__delete__icon"]} />
       </div>
     </div>

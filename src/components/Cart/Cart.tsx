@@ -1,5 +1,5 @@
 import { Routes } from "constants/routes";
-import { RootState } from "core/store";
+import { getAllItemsInCartAmount, getAllItemsInCartSum } from "features/products/selectors";
 import { formatMoney } from "helpers/formatMoney";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,9 +9,8 @@ import { ReactComponent as CartIcon } from "../../assets/cart.svg";
 import s from "./Cart.module.scss";
 
 export const Cart: React.FC = () => {
-  const { allItemsInCartAmount, allItemsInCartSum } = useSelector(
-    (state: RootState) => state.products
-  );
+  const allItemsInCartAmount = useSelector(getAllItemsInCartAmount);
+  const allItemsInCartSum = useSelector(getAllItemsInCartSum);
 
   return (
     <div className={s["cart-component"]}>

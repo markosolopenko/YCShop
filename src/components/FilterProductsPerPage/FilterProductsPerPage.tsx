@@ -1,4 +1,5 @@
 import { changeAmountOfPorductsPerPage } from "features/products/productsSlice";
+import { useCallback } from "react";
 
 import { useDispatch } from "react-redux";
 import Select from "react-select";
@@ -13,9 +14,9 @@ const options: { value: string; label: string }[] = [
 export const FilterProductsPerPage: React.FC = () => {
   const dispatch = useDispatch();
 
-  const handleInputChange = (e: { value: string; label: string } | null) => {
+  const handleInputChange = useCallback((e: { value: string; label: string } | null) => {
     dispatch(changeAmountOfPorductsPerPage(Number(e?.value)));
-  };
+  }, []);
 
   return (
     <div className={s["filter-perPage"]}>
