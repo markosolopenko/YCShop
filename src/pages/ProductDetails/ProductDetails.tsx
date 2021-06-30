@@ -3,13 +3,16 @@ import { formatMoney } from "helpers/formatMoney";
 import { operators } from "constants/operators";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
-import { getProduct } from "features/products/selectors";
+import { getProduct, getStatus } from "features/products/selectors";
+import { PENDING } from "constants/status";
+import { Loader } from "components/Loader/Loader";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
   const product = useSelector(getProduct);
+  const status = useSelector(getStatus);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const { plus } = operators;
@@ -25,6 +28,10 @@ export const ProductDetails: React.FC = () => {
     }
     setValue(0);
   }, [value]);
+
+  if (status === PENDING) {
+    return <Loader />;
+  }
 
   return (
     <div className={s["prodcut-detils"]}>
