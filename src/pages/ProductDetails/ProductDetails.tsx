@@ -1,33 +1,37 @@
-import { useCallback, useContext, useState } from "react";
-import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
+import { useCallback, useState } from "react";
 import { formatMoney } from "helpers/formatMoney";
 import { operators } from "constants/operators";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
+import { getProduct, getStatus } from "features/products/selectors";
+import { PENDING } from "constants/status";
+import { Loader } from "components/Loader/Loader";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
 
 export const ProductDetails: React.FC = () => {
+  const product = useSelector(getProduct);
+  const status = useSelector(getStatus);
   const [value, setValue] = useState(0);
-  const state = useContext(ProductsContextState);
-  const dispatch = useContext(ProductsContextDispatch);
-  const { product } = state;
+  const dispatch = useDispatch();
   const { plus } = operators;
 
-  const handelInputChange = (inputValue: number) => {
+  const handelInputChange = useCallback((inputValue: number) => {
     setValue(inputValue);
-  };
+  }, []);
 
   const handleAddToCartClick = useCallback(() => {
     if (value > 0 && product) {
-      dispatch({
-        type: CHANGE_CART_COUNTS,
-        payload: { count: value, sum: value * product?.price, operator: plus },
-      });
-      dispatch({ type: ADD_TO_CART, payload: { product, operator: plus, amount: value } });
+      dispatch(addToCartAction({ product, operator: plus, amount: value }));
+      dispatch(changeCartCountsAtion());
     }
     setValue(0);
   }, [value]);
+
+  if (status === PENDING) {
+    return <Loader />;
+  }
 
   return (
     <div className={s["prodcut-detils"]}>
@@ -58,12 +62,7 @@ export const ProductDetails: React.FC = () => {
                 {new Date(product.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <Counter
-              startValue={value}
-              product={product}
-              addToCart={false}
-              onChange={handelInputChange}
-            />
+            <Counter startValue={value} onChange={handelInputChange} />
             <div
               className={s["prodcut-detils__product__body__addToCart"]}
               onClick={handleAddToCartClick}

@@ -1,23 +1,35 @@
-import { FETCH_PRODUCTS, LOAD_MORE } from "actionTypes/products";
-import { ProductsContextDispatch, ProductsContextState } from "context/ProductsContext";
-import { useCallback, useContext, useEffect, useRef } from "react";
-import { getProducts } from "../../api/productsRequests";
+import { useCallback, useEffect, useRef } from "react";
+import { fetchProductsThunk, getOriginsThunk } from "features/products/thunks";
+import { useDispatch, useSelector } from "react-redux";
+import { loadMoreProducts } from "features/products/productsSlice";
+
+import { getParams, getProductsList, getRange, getStatus } from "features/products/selectors";
+import { PENDING } from "constants/status";
+import { Loader } from "components/Loader/Loader";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
-import { ReactComponent as ArrowDown } from "../../assets/chevron-down-solid.svg";
+import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
+import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
+
+import { FilterByPrice } from "../../components/FilterByPrice/FilterByPrice";
+import { Pagination } from "../../components/Pagination/Pagination";
 
 import s from "./Products.module.scss";
 
 export const Products: React.FC = () => {
-  const state = useContext(ProductsContextState);
-  const dispatch = useContext(ProductsContextDispatch);
+  const products = useSelector(getProductsList);
+  const range = useSelector(getRange);
+  const params = useSelector(getParams);
+  const status = useSelector(getStatus);
 
-  const { products, currentPage, perPage, totalItems } = state;
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getProducts(currentPage, perPage).then((data) => {
-      dispatch({ type: FETCH_PRODUCTS, payload: data });
-    });
-  }, [currentPage]);
+    dispatch(fetchProductsThunk(params));
+  }, [params]);
+
+  useEffect(() => {
+    dispatch(getOriginsThunk());
+  }, []);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
 
@@ -27,9 +39,13 @@ export const Products: React.FC = () => {
     }
   }, []);
 
-  const loadMoreHandler = useCallback(() => {
-    dispatch({ type: LOAD_MORE });
-  }, []);
+  const handlePaginationChange = (page: number) => {
+    dispatch(loadMoreProducts(page));
+  };
+
+  if (status === PENDING) {
+    return <Loader />;
+  }
 
   return (
     <div className={s.products}>
@@ -46,13 +62,17 @@ export const Products: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <div className={s.products__filters}>
+        <FilterProductsPerPage />
+        <FilterByOrigins />
+        <FilterByPrice />
+      </div>
       <div className={s.products__body} ref={body}>
         <ProductsList productsList={products} />
       </div>
-      {products.length !== totalItems && (
-        <div className={s.products__loadMore} onClick={loadMoreHandler}>
-          LOAD MORE <ArrowDown className={s.products__loadMore__arrow} />
-        </div>
+      {range > 0 && (
+        <Pagination onChange={handlePaginationChange} activePage={params.page} totalPages={range} />
       )}
     </div>
   );

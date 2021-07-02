@@ -1,28 +1,16 @@
-import { operators } from "constants/operators";
+import { IProductsInCart } from "types/types";
 
 type ReturnType = {
-  allItemsInCartAmount: number;
-  allItemsInCartSum: number;
+  count: number;
+  sum: number;
 };
 
-export const changeCartCounts = (
-  count: number,
-  sum: number,
-  operator: string,
-  current: { count: number; sum: number }
-): ReturnType => {
-  const result: ReturnType = {
-    allItemsInCartAmount: current.count,
-    allItemsInCartSum: current.sum,
-  };
-  const { plus } = operators;
-  if (operator === plus) {
-    result.allItemsInCartAmount += count;
-    result.allItemsInCartSum += sum;
-  } else {
-    result.allItemsInCartAmount -= count;
-    result.allItemsInCartSum -= sum;
-  }
-
-  return result;
+export const changeCartCounts = (productsAddedToCart: IProductsInCart[]): ReturnType => {
+  let count = 0;
+  let sum = 0;
+  productsAddedToCart.forEach((item) => {
+    count += item.amount;
+    sum += item.product.price * item.amount;
+  });
+  return { sum, count };
 };

@@ -1,6 +1,10 @@
 .counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 150px;
   &__amount {
-    margin: 0 5px;
     font-size: 18px;
     border-radius: 5px;
     border: 2px solid black;
@@ -20,8 +24,14 @@
     cursor: pointer;
     border-radius: 5px;
     border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   &__plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 30px;
     font-size: 20px;

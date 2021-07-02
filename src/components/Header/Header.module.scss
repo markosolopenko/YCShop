@@ -2,9 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   background-color: #0a9396;
-
   height: 70px;
   &__logo {
     color: white;
@@ -12,29 +10,32 @@
     font-weight: bold;
     border-bottom: 3px solid orange;
     border-top: 3px solid orange;
-    padding: 6px;
+    padding: 4px;
     border-radius: 5px;
     margin-left: 20px;
   }
   &__navbar {
     display: flex;
-
-    list-style: none;
-
     height: 100%;
+    list-style: none;
 
     &__item {
       display: flex;
       align-items: center;
-      padding: 5px;
+      padding: 4px;
       cursor: pointer;
       text-decoration: none;
       color: white;
       font-weight: 600;
-
       font-size: 16px;
+      transition: all 0.2s linear;
+      &.active {
+        background-color: #94d2bd;
+      }
+
       &:hover {
-        background-color: #f7c594;
+        color: white;
+        background-color: #94d2bd;
       }
     }
   }

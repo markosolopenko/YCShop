@@ -1,57 +1,26 @@
-import { ADD_TO_CART, CHANGE_CART_COUNTS } from "actionTypes/products";
-import { operators } from "constants/operators";
-import { ProductsContextDispatch } from "context/ProductsContext";
-import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
-import { IProduct } from "../../types/types";
+import { ChangeEvent, useCallback } from "react";
+
 import s from "./Counter.module.scss";
 
 type IProps = {
   startValue: number;
-  product: IProduct;
-  addToCart: boolean;
   onChange: (inputValue: number) => void;
 };
 
-export const Counter: React.FC<IProps> = ({ startValue, product, addToCart, onChange }) => {
-  const [counter, setCounter] = useState(startValue);
-
-  const dispatch = useContext(ProductsContextDispatch);
-
-  const { plus, minus } = operators;
-
-  useEffect(() => {
-    onChange(counter);
-  }, [counter]);
-
+export const Counter: React.FC<IProps> = ({ startValue, onChange }) => {
   const handleMinusClick = useCallback(() => {
-    if (counter > 1) {
-      setCounter(counter - 1);
-
-      if (addToCart) {
-        dispatch({ type: ADD_TO_CART, payload: { product, operator: minus, amount: counter } });
-        dispatch({
-          type: CHANGE_CART_COUNTS,
-          payload: { count: 1, sum: product.price, operator: minus },
-        });
-      }
+    if (startValue > 0) {
+      onChange(startValue - 1);
     }
-  }, [counter]);
+  }, [startValue]);
 
   const handlePlusClick = useCallback(() => {
-    setCounter(counter + 1);
+    onChange(startValue + 1);
+  }, [startValue]);
 
-    if (addToCart) {
-      dispatch({ type: ADD_TO_CART, payload: { product, operator: plus, amount: 1 } });
-      dispatch({
-        type: CHANGE_CART_COUNTS,
-        payload: { count: 1, sum: product.price, operator: plus },
-      });
-    }
-  }, [counter]);
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCounter(Number(e.target.value));
-  };
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    onChange(Number(e.target.value));
+  }, []);
 
   return (
     <div className={s.counter}>

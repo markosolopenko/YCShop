@@ -1,0 +1,46 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  &__arrow {
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    background-color: orange;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    &__icon {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  &__pages {
+    display: flex;
+
+    &__page {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: black;
+      border-radius: 4px;
+
+      &.active {
+        background-color: orange;
+      }
+      &.border {
+        border: 1px solid black;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
