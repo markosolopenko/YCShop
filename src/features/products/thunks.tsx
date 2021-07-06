@@ -1,5 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getOrigins, getProductById, getProducts, TGetProductsParams } from "api/productsRequests";
+import {
+  createProduct,
+  getOrigins,
+  getProductById,
+  getProducts,
+  TGetProductsParams,
+} from "api/productsRequests";
+import { IFormData } from "components/CreateNewProductModal/types";
 
 export const fetchProductsThunk = createAsyncThunk(
   "products/getProducts",
@@ -23,3 +30,12 @@ export const getOriginsThunk = createAsyncThunk("products/getOrigins", async () 
   const response = await getOrigins();
   return response.data;
 });
+
+export const createProductThunk = createAsyncThunk(
+  "products/createProduct",
+  async (data: IFormData) => {
+    const response = await createProduct(data);
+
+    return response.data;
+  }
+);

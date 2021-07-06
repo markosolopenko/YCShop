@@ -43,7 +43,7 @@ export const Products: React.FC = () => {
     dispatch(loadMoreProducts(page));
   };
 
-  if (status === PENDING) {
+  if (status === PENDING && products.length === 0) {
     return <Loader />;
   }
 

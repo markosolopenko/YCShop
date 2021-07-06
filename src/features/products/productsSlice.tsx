@@ -4,7 +4,12 @@ import { PENDING, FULFILLED, REJECTED } from "constants/status";
 import { addToCart } from "helpers/addToCart";
 import { changeCartCounts } from "helpers/changeCartCounts";
 
-import { fetchProductByIdThunk, fetchProductsThunk, getOriginsThunk } from "./thunks";
+import {
+  createProductThunk,
+  fetchProductByIdThunk,
+  fetchProductsThunk,
+  getOriginsThunk,
+} from "./thunks";
 import { IProductsSliceState } from "./types";
 
 const initialState: IProductsSliceState = {
@@ -88,6 +93,17 @@ const productsSlice = createSlice({
     builder.addCase(getOriginsThunk.fulfilled, (state, action) => {
       state.origins = action.payload.items;
     });
+    builder
+      .addCase(createProductThunk.pending, (state) => {
+        state.status = PENDING;
+      })
+      .addCase(createProductThunk.fulfilled, (state) => {
+        state.status = FULFILLED;
+      })
+      .addCase(createProductThunk.rejected, (state) => {
+        state.status = REJECTED;
+        state.error = "Erorr createProduct";
+      });
   },
 });
 

@@ -1,10 +1,9 @@
 import React from "react";
 
-enum ButtonTypes {
-  "button",
+enum IButtons {
   "submit",
   "reset",
-  undefined,
+  "delete",
 }
 
 export interface IPropsModal {

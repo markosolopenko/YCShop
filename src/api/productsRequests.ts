@@ -1,5 +1,6 @@
 import { IProduct, IProducts } from "types/types";
 import { ISelectedOrigins } from "features/products/types";
+import { IFormData } from "components/CreateNewProductModal/types";
 import { axiosInstance } from "./api";
 
 import { API_ENDPOINTS } from "../constants/endpoints";
@@ -38,4 +39,8 @@ export const getProductById = async (id: string): Promise<{ data: IProduct }> =>
 
 export const getOrigins = async (): Promise<{ data: { items: TGetOriginsParams[] } }> => {
   return await axiosInstance.get(PRODUCTS_ORIGINS);
+};
+
+export const createProduct = async (data: IFormData): Promise<{ data: string }> => {
+  return await axiosInstance.post(PRODUCTS, { product: data });
 };

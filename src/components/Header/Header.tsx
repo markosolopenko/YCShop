@@ -17,7 +17,7 @@ const navbarItems: TNavbarItems[] = [
 
 export const Header: React.FC = () => {
   const location = useLocation();
-  const { state: isOpen, setOpen, setClose } = useModal(true);
+  const { state: isOpen, setOpen, setClose } = useModal(false);
   const handleOpenModalClick = () => {
     setOpen();
   };

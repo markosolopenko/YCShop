@@ -2,8 +2,9 @@ import { getOrigins } from "features/products/selectors";
 import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { createProductThunk } from "features/products/thunks";
 import { Modal } from "../../common/Modal/Modal";
 import { Portal } from "../../common/Portal/Portal";
 import s from "./CreateNewProductModal.module.scss";
@@ -13,6 +14,7 @@ const buttons = [{ text: "Create", style: "submit" }];
 
 export const CreateNewProductModal: React.FC<TProps> = ({ setClose }) => {
   const origins = useSelector(getOrigins);
+  const dispatch = useDispatch();
   const originsForShema = useMemo(() => {
     return origins.map((origin) => origin.value);
   }, [origins]);
@@ -22,15 +24,9 @@ export const CreateNewProductModal: React.FC<TProps> = ({ setClose }) => {
   };
 
   const schema = Yup.object().shape({
-    name: Yup.string()
-      .min(3, "Minimum 3 symbols!!!")
-      .max(30, "Maximum 30 symbols!!")
-      .required("Required!!!"),
-    price: Yup.number()
-      .typeError("Type error. Must be a number!!!")
-      .min(0, "Negative numbers are not allowed !!!")
-      .required("Required!!!"),
-    origin: Yup.string().oneOf(originsForShema, "Invalid Origin!!!").required("Required!!!"),
+    name: Yup.string().min(3).max(30).required(),
+    price: Yup.number().required().positive().integer(),
+    origin: Yup.string().oneOf(originsForShema, "Invalid Origin!!!").required(),
   });
 
   const {
@@ -39,7 +35,11 @@ export const CreateNewProductModal: React.FC<TProps> = ({ setClose }) => {
     formState: { errors },
   } = useForm<IFormData>({ resolver: yupResolver(schema) });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => {
+    const { name, price, origin } = data;
+    dispatch(createProductThunk({ name, price, origin }));
+    setClose();
+  });
 
   return (
     <Portal className="modal__create" element="div">

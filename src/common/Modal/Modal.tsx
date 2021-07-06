@@ -1,5 +1,8 @@
 import React from "react";
 import cn from "classnames";
+import { getStatus } from "features/products/selectors";
+import { useSelector } from "react-redux";
+import { PENDING } from "constants/status";
 import { IPropsModal } from "./types";
 import { ReactComponent as Cancel } from "../../assets/cancel.svg";
 import s from "./Modal.module.scss";
@@ -14,6 +17,8 @@ export const Modal: React.FC<IPropsModal> = ({
   const handleSubmitClick = () => {
     onSubmit();
   };
+  const status = useSelector(getStatus);
+
   return (
     <div className={s.modal}>
       <div className={s.modal__title}>
@@ -33,6 +38,7 @@ export const Modal: React.FC<IPropsModal> = ({
                 [s.submit]: button.style === "submit",
                 [s.reset]: button.style === "reset",
               })}
+              disabled={status === PENDING}
             >
               {button.text}
             </button>

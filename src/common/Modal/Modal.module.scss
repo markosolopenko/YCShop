@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    flex: 10%;
+
     &__icon {
       width: 25px;
       height: 25px;
@@ -29,10 +29,11 @@
   }
   &__content {
     padding: 20px;
-    flex: 70%;
+
+    display: flex;
+    justify-content: center;
   }
   &__buttons {
-    flex: 10%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
