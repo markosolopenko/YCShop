@@ -10,9 +10,11 @@ import { Cart } from "../Cart/Cart";
 
 import s from "./Header.module.scss";
 
+const { PRODUCTS, PRODUCT_DEATAILS, CREATED_PRODUCTS } = Routes;
 const navbarItems: TNavbarItems[] = [
-  { id: 1, content: "Products", route: "/products" },
-  { id: 2, content: "Details", route: "/details" },
+  { id: 1, content: "Products", route: PRODUCTS },
+  { id: 2, content: "Details", route: PRODUCT_DEATAILS },
+  { id: 3, content: "Created Products", route: CREATED_PRODUCTS },
 ];
 
 export const Header: React.FC = () => {
@@ -42,7 +44,7 @@ export const Header: React.FC = () => {
                 [s.active]: location.pathname === item.route,
               })}
             >
-              <div>{item.content}</div>
+              <div className={s.header__navbar__item__content}>{item.content}</div>
             </Link>
           );
         })}

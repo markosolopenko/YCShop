@@ -27,6 +27,7 @@ const initialState: IProductsSliceState = {
   selectedOrigins: [],
   minPrice: "",
   maxPrice: "",
+  isEditable: false,
 };
 
 const productsSlice = createSlice({
@@ -61,6 +62,10 @@ const productsSlice = createSlice({
     },
     changeAmountOfPorductsPerPage(state, action) {
       state.perPage = action.payload;
+    },
+    setIsEditable(state, action) {
+      state.isEditable = action.payload;
+      state.products = [];
     },
   },
   extraReducers: (builder) => {
@@ -117,4 +122,5 @@ export const {
   loadMoreProducts,
   setRangePrices,
   changeAmountOfPorductsPerPage,
+  setIsEditable,
 } = productsSlice.actions;

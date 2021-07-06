@@ -24,6 +24,7 @@ export const getMinPrice = (state: RootState): string => state.products.minPrice
 export const getMaxPrice = (state: RootState): string => state.products.maxPrice;
 
 export const getStatus = (state: RootState): string | null => state.products.status;
+export const getIsEditable = (state: RootState): boolean => state.products.isEditable;
 
 export const getParams = createSelector(
   getCurrentPage,
@@ -31,12 +32,14 @@ export const getParams = createSelector(
   getSelectedOrigins,
   getMinPrice,
   getMaxPrice,
-  (page, perPage, selectedOrigins, minPrice, maxPrice) => ({
+  getIsEditable,
+  (page, perPage, selectedOrigins, minPrice, maxPrice, isEditable) => ({
     page,
     perPage,
     origins: selectedOrigins || undefined,
     minPrice: minPrice || undefined,
     maxPrice: maxPrice || undefined,
+    isEditable,
   })
 );
 

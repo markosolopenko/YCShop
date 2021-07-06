@@ -11,8 +11,8 @@ import { IFormData } from "components/CreateNewProductModal/types";
 export const fetchProductsThunk = createAsyncThunk(
   "products/getProducts",
   async (data: TGetProductsParams) => {
-    const { page, perPage, origins, minPrice, maxPrice } = data;
-    const response = await getProducts({ page, perPage, origins, minPrice, maxPrice });
+    const { page, perPage, origins, minPrice, maxPrice, isEditable } = data;
+    const response = await getProducts({ page, perPage, origins, minPrice, maxPrice, isEditable });
 
     return response.data;
   }

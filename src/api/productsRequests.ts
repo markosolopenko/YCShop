@@ -18,6 +18,7 @@ export type TGetProductsParams = {
   origins: ISelectedOrigins[] | [];
   minPrice?: string;
   maxPrice?: string;
+  isEditable?: boolean;
 };
 
 export const getProducts = async ({
@@ -26,10 +27,11 @@ export const getProducts = async ({
   origins,
   minPrice,
   maxPrice,
+  isEditable,
 }: TGetProductsParams): Promise<{ data: IProducts }> => {
   const selecedOrigins = origins.map((origin) => origin.value).join(",");
   return await axiosInstance.get(PRODUCTS, {
-    params: { page, perPage, origins: selecedOrigins, minPrice, maxPrice },
+    params: { page, perPage, origins: selecedOrigins, minPrice, maxPrice, editable: isEditable },
   });
 };
 

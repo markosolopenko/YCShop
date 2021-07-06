@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
-import { fetchProductsThunk, getOriginsThunk } from "features/products/thunks";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMoreProducts } from "features/products/productsSlice";
+import { loadMoreProducts, setIsEditable } from "features/products/productsSlice";
 
 import { getParams, getProductsList, getRange, getStatus } from "features/products/selectors";
 import { PENDING } from "constants/status";
@@ -24,11 +23,7 @@ export const Products: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProductsThunk(params));
-  }, [params]);
-
-  useEffect(() => {
-    dispatch(getOriginsThunk());
+    dispatch(setIsEditable(false));
   }, []);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
