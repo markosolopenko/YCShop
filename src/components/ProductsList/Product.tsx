@@ -33,11 +33,13 @@ export const Product: React.FC<IProps> = ({ item, button }) => {
       </div>
 
       <div className={s.product__buttons}>
-        <Link to={Routes.PRODUCT_DEATAILS}>
-          <button onClick={handleDetailButtonClick} className={s.product__buttons__detailBtn}>
-            DETAIL PAGE
-          </button>
-        </Link>
+        {!item.isEditable && (
+          <Link to={Routes.PRODUCT_DEATAILS}>
+            <button onClick={handleDetailButtonClick} className={s.product__buttons__detailBtn}>
+              DETAIL PAGE
+            </button>
+          </Link>
+        )}
         <button
           onClick={() => button?.handleFunction(item)}
           className={s.product__buttons__addToCartBtn}
