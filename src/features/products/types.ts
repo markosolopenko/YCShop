@@ -22,4 +22,5 @@ export interface IProductsSliceState {
   minPrice: string;
   maxPrice: string;
   isEditable: boolean;
+  createdProducts: IProduct[];
 }

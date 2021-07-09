@@ -22,6 +22,8 @@ export const getSelectedOrigins = (state: RootState): ISelectedOrigins[] =>
 
 export const getMinPrice = (state: RootState): string => state.products.minPrice;
 export const getMaxPrice = (state: RootState): string => state.products.maxPrice;
+export const selectCreatedProducts = (state: RootState): IProduct[] =>
+  state.products.createdProducts;
 
 export const getStatus = (state: RootState): string | null => state.products.status;
 export const getIsEditable = (state: RootState): boolean => state.products.isEditable;

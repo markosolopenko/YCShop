@@ -29,6 +29,7 @@ const initialState: IProductsSliceState = {
   minPrice: "",
   maxPrice: "",
   isEditable: false,
+  createdProducts: [],
 };
 
 const productsSlice = createSlice({
@@ -67,6 +68,21 @@ const productsSlice = createSlice({
     setIsEditable(state, action) {
       state.isEditable = action.payload;
       state.products = [];
+      state.minPrice = "";
+      state.maxPrice = "";
+      state.currentPage = 1;
+      state.perPage = 10;
+    },
+    updateProductInList(state, action) {
+      const { id, product } = action.payload;
+      const { name, price, origin } = product;
+      state.products = state.products.map((item) =>
+        item.id === id ? { ...item, name, price, origin } : item
+      );
+    },
+    createNewProduct(state, action) {
+      state.createdProducts = [...state.createdProducts, action.payload];
+      state.products = [...state.products, action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -81,7 +97,7 @@ const productsSlice = createSlice({
         state.totalItems = totalItems;
       })
       .addCase(fetchProductsThunk.rejected, (state) => {
-        state.error = "Error fetchProdcuts";
+        state.error = "Error fetchProducts";
         state.status = REJECTED;
       });
     builder
@@ -110,9 +126,17 @@ const productsSlice = createSlice({
         state.status = REJECTED;
         state.error = "Erorr createProduct";
       });
-    builder.addCase(updateProductThunk.fulfilled, (state) => {
-      state.status = FULFILLED;
-    });
+    builder
+      .addCase(updateProductThunk.fulfilled, (state) => {
+        state.status = FULFILLED;
+      })
+      .addCase(updateProductThunk.pending, (state) => {
+        state.status = PENDING;
+      })
+      .addCase(updateProductThunk.rejected, (state) => {
+        state.status = REJECTED;
+        state.error = "Error updateProduct";
+      });
   },
 });
 
@@ -127,4 +151,6 @@ export const {
   setRangePrices,
   changeAmountOfPorductsPerPage,
   setIsEditable,
+  updateProductInList,
+  createNewProduct,
 } = productsSlice.actions;

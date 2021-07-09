@@ -5,7 +5,7 @@ export interface IFormData {
 }
 
 export type TProps = {
-  values: { name: string; price: number | string; origin: string };
+  values: { name: string; price: number; origin: string };
   buttons: {
     text: string;
     style: string;

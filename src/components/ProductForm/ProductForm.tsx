@@ -17,19 +17,24 @@ export const PorductForm: React.FC<TProps> = ({ values, buttons, submitHandler }
 
   const schema = Yup.object().shape({
     name: Yup.string().min(3).max(30).required(),
-    price: Yup.number().required().positive().integer(),
+    price: Yup.number().positive().integer().required(),
     origin: Yup.string().oneOf(originsForShema, "Invalid Origin!!!").required(),
   });
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormData>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
     submitHandler(data);
   });
+  const handleResetClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    reset();
+  };
 
   const { name, price, origin } = values;
 
@@ -70,7 +75,7 @@ export const PorductForm: React.FC<TProps> = ({ values, buttons, submitHandler }
         {buttons.map((button, index) => {
           return (
             <button
-              onClick={onSubmit}
+              onClick={button.style === "submit" ? onSubmit : handleResetClick}
               key={index}
               className={cn(s.form__buttons__button, {
                 [s.submit]: button.style === "submit",

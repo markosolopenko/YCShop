@@ -6,7 +6,7 @@ import { Products } from "pages/Products/Products";
 import { CreatedProducts } from "pages/CreatedProducts/CreatedProducts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductsThunk, getOriginsThunk } from "features/products/thunks";
-import { getParams } from "features/products/selectors";
+import { getParams, selectCreatedProducts } from "features/products/selectors";
 import { Routes } from "../constants/routes";
 import { ProductDetails } from "../pages/ProductDetails/ProductDetails";
 import { ProductsCart } from "../pages/ProductsCart/ProductsCart";
@@ -18,11 +18,13 @@ import s from "./App.module.scss";
 export const App: React.FC = () => {
   const { PRODUCTS, PRODUCT_DEATAILS, PRODUCTS_CART, CREATED_PRODUCTS } = Routes;
   const params = useSelector(getParams);
+  const createdProducts = useSelector(selectCreatedProducts);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProductsThunk(params));
-  }, [params]);
+  }, [params, createdProducts]);
 
   useEffect(() => {
     dispatch(getOriginsThunk());
