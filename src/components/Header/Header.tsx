@@ -10,11 +10,12 @@ import { CreateProductModal } from "../CreateProductModal/CreateProductModal";
 
 import s from "./Header.module.scss";
 
-const { PRODUCTS, PRODUCT_DEATAILS, CREATED_PRODUCTS } = Routes;
+const { PRODUCTS, PRODUCT_DEATAILS, CREATED_PRODUCTS, ORDERS } = Routes;
 const navbarItems: TNavbarItems[] = [
   { id: 1, content: "Products", route: PRODUCTS },
   { id: 2, content: "Details", route: PRODUCT_DEATAILS },
   { id: 3, content: "Created Products", route: CREATED_PRODUCTS },
+  { id: 4, content: "Orders", route: ORDERS },
 ];
 
 export const Header: React.FC = () => {

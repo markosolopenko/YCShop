@@ -15,7 +15,7 @@ export const ProductsCart: React.FC = () => {
           return <ProductInCart item={item} key={item.product.id} />;
         })}
       </div>
-      <div className={s["products-cart__total"]}>Total: {formatMoney(allItemsInCartSum)}</div>
+      <div className={s["products-cart__total"]}>ORDER: {formatMoney(allItemsInCartSum)}</div>
     </div>
   );
 };

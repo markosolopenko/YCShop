@@ -4,7 +4,7 @@
   &__total {
     font-size: 25px;
     font-weight: bold;
-    background-color: #ae2012;
+    background: radial-gradient(#000000, #0a9396);
     padding: 10px;
 
     display: flex;
@@ -12,6 +12,11 @@
     justify-content: center;
     float: right;
     color: white;
-    border-radius: 5px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 1px #0a9396;
+    &:hover {
+      opacity: 0.7;
+    }
   }
 }
