@@ -25,10 +25,11 @@
       border: none;
       outline: none;
       cursor: pointer;
-      padding: 10px 30px;
+      padding: 10px;
       border-radius: 5px;
       color: white;
       font-weight: bold;
+      width: 150px;
       &:hover {
         background-color: rgb(214, 158, 54);
       }
@@ -38,10 +39,11 @@
       border: none;
       outline: none;
       cursor: pointer;
-      padding: 10px 30px;
+      padding: 10px;
       border-radius: 5px;
       color: white;
       font-weight: bold;
+      width: 150px;
       &:hover {
         background-color: rgb(219, 184, 120);
       }

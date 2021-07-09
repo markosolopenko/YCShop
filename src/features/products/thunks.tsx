@@ -6,7 +6,9 @@ import {
   getProducts,
   TGetProductsParams,
 } from "api/productsRequests";
-import { IFormData } from "components/CreateNewProductModal/types";
+import { IFormData } from "components/ProductForm/types";
+import { IUpdateProduct } from "types/types";
+import { updateProduct } from "../../api/productsRequests";
 
 export const fetchProductsThunk = createAsyncThunk(
   "products/getProducts",
@@ -35,6 +37,15 @@ export const createProductThunk = createAsyncThunk(
   "products/createProduct",
   async (data: IFormData) => {
     const response = await createProduct(data);
+
+    return response.data;
+  }
+);
+
+export const updateProductThunk = createAsyncThunk(
+  "products/updateProduct",
+  async (data: IUpdateProduct) => {
+    const response = await updateProduct(data);
 
     return response.data;
   }

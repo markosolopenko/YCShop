@@ -1,31 +1,23 @@
 import { Routes } from "constants/routes";
-
 import { formatMoney } from "helpers/formatMoney";
 import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
-import { operators } from "constants/operators";
 import { useDispatch } from "react-redux";
 import { fetchProductByIdThunk } from "features/products/thunks";
-import { addToCartAction, changeCartCountsAtion } from "features/products/productsSlice";
 import { IProduct } from "../../types/types";
 
 import s from "./Product.module.scss";
 
 type IProps = {
   item: IProduct;
+  button?: { text: string; handleFunction: (item: IProduct) => void };
 };
 
-export const Product: React.FC<IProps> = ({ item }) => {
+export const Product: React.FC<IProps> = ({ item, button }) => {
   const dispatch = useDispatch();
-  const { plus } = operators;
 
   const handleDetailButtonClick = useCallback(() => {
     dispatch(fetchProductByIdThunk(item.id));
-  }, []);
-
-  const handleAddToCartClick: () => void = useCallback(() => {
-    dispatch(addToCartAction({ product: item, operator: plus, amount: 1 }));
-    dispatch(changeCartCountsAtion());
   }, []);
 
   return (
@@ -46,8 +38,11 @@ export const Product: React.FC<IProps> = ({ item }) => {
             DETAIL PAGE
           </button>
         </Link>
-        <button onClick={handleAddToCartClick} className={s.product__buttons__addToCartBtn}>
-          ADD TO CART
+        <button
+          onClick={() => button?.handleFunction(item)}
+          className={s.product__buttons__addToCartBtn}
+        >
+          {button?.text}
         </button>
       </div>
     </div>

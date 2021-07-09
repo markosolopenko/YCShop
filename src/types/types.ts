@@ -19,3 +19,12 @@ export interface IProductsInCart {
   amount: number;
   product: IProduct;
 }
+
+export interface IUpdateProduct {
+  id: string;
+  product: {
+    name: string;
+    price: number;
+    origin: string;
+  };
+}

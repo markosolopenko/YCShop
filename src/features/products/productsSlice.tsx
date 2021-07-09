@@ -11,6 +11,7 @@ import {
   getOriginsThunk,
 } from "./thunks";
 import { IProductsSliceState } from "./types";
+import { updateProductThunk } from "./thunks";
 
 const initialState: IProductsSliceState = {
   status: null,
@@ -109,6 +110,9 @@ const productsSlice = createSlice({
         state.status = REJECTED;
         state.error = "Erorr createProduct";
       });
+    builder.addCase(updateProductThunk.fulfilled, (state) => {
+      state.status = FULFILLED;
+    });
   },
 });
 
