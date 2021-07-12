@@ -6,6 +6,7 @@ import { addToCartAction, changeCartCountsAtion } from "features/products/produc
 import { getProduct, getStatus } from "features/products/selectors";
 import { PENDING } from "constants/status";
 import { Loader } from "components/Loader/Loader";
+import { Empty } from "antd";
 import { ReactComponent as Cart } from "../../assets/cart.svg";
 import { Counter } from "../../components/Counter/Counter";
 import s from "./ProductDetails.module.scss";
@@ -75,7 +76,9 @@ export const ProductDetails: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>NO Products ADDED</div>
+        <div>
+          <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} />
+        </div>
       )}
     </div>
   );

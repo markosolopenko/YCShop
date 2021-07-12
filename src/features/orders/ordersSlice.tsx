@@ -7,6 +7,7 @@ const initialState: IInitStateOrders = {
   orders: [],
   status: "",
   error: "",
+  orderCreated: false,
 };
 
 const ordersSlice = createSlice({
@@ -17,13 +18,16 @@ const ordersSlice = createSlice({
     builder
       .addCase(createNewOrderThunk.pending, (state) => {
         state.status = PENDING;
+        state.orderCreated = false;
       })
       .addCase(createNewOrderThunk.fulfilled, (state) => {
         state.status = FULFILLED;
+        state.orderCreated = true;
       })
       .addCase(createNewOrderThunk.rejected, (state) => {
         state.error = "Error orders/createOrder";
         state.status = REJECTED;
+        state.orderCreated = false;
       });
     builder
       .addCase(getOrdersThunk.pending, (state) => {

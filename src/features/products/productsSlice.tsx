@@ -84,6 +84,11 @@ const productsSlice = createSlice({
       state.createdProducts = [...state.createdProducts, action.payload];
       state.products = [...state.products, action.payload];
     },
+    clearCart(state) {
+      state.productsAddedToCart = [];
+      state.allItemsInCartAmount = 0;
+      state.allItemsInCartSum = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -153,4 +158,5 @@ export const {
   setIsEditable,
   updateProductInList,
   createNewProduct,
+  clearCart,
 } = productsSlice.actions;

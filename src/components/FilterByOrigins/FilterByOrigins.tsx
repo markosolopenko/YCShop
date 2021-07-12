@@ -21,7 +21,7 @@ export const FilterByOrigins: React.FC = () => {
     [origins]
   );
 
-  const handleSelect = useCallback((selected: ISelectedOrigins[] | any) => {
+  const handleSelect = useCallback((selected: ISelectedOrigins[] | unknown) => {
     dispatch(setSlectedOrigins(selected));
   }, []);
 
