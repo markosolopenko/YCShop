@@ -11,3 +11,7 @@ export const createOrder = async (data: TOrder[]): Promise<{ data: string }> => 
 export const getOrders = async (): Promise<{ data: { items: TOrderGet[] } }> => {
   return await axiosInstance.get(ORDERS);
 };
+
+export const getOrderById = async (id: string): Promise<{ data: TOrderGet }> => {
+  return await axiosInstance.get(`${ORDERS}/${id}`);
+};

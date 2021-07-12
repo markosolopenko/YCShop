@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNewOrderThunk, getOrdersThunk } from "./thunks";
+import { createNewOrderThunk, getOrdersThunk, getOrderByIdThunk } from "./thunks";
 import { IInitStateOrders } from "./types";
 import { PENDING, REJECTED, FULFILLED } from "../../constants/status";
 
@@ -8,12 +8,18 @@ const initialState: IInitStateOrders = {
   status: "",
   error: "",
   orderCreated: false,
+  orderId: "",
+  order: null,
 };
 
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
-  reducers: {},
+  reducers: {
+    setOrderId(state, action) {
+      state.orderId = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createNewOrderThunk.pending, (state) => {
@@ -41,7 +47,21 @@ const ordersSlice = createSlice({
         state.error = "Error orders/getOrders";
         state.status = REJECTED;
       });
+    builder
+      .addCase(getOrderByIdThunk.pending, (state) => {
+        state.status = PENDING;
+      })
+      .addCase(getOrderByIdThunk.fulfilled, (state, action) => {
+        state.status = FULFILLED;
+        state.order = action.payload;
+      })
+      .addCase(getOrderByIdThunk.rejected, (state) => {
+        state.status = REJECTED;
+        state.error = "Error getOrderByID";
+      });
   },
 });
 
 export default ordersSlice.reducer;
+
+export const { setOrderId } = ordersSlice.actions;

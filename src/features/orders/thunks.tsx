@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createOrder, getOrders } from "../../api/ordersRequests";
+import { createOrder, getOrders, getOrderById } from "../../api/ordersRequests";
 import { TOrder } from "./types";
 
 export const createNewOrderThunk = createAsyncThunk(
@@ -13,6 +13,12 @@ export const createNewOrderThunk = createAsyncThunk(
 
 export const getOrdersThunk = createAsyncThunk("orders/getOrders", async () => {
   const response = await getOrders();
+
+  return response.data;
+});
+
+export const getOrderByIdThunk = createAsyncThunk("orders/getOrderById", async (id: string) => {
+  const response = await getOrderById(id);
 
   return response.data;
 });
