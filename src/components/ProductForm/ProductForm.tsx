@@ -16,8 +16,8 @@ export const PorductForm: React.FC<TProps> = ({ values, buttons, submitHandler }
 
   const schema = yup.object().shape({
     name: yup.string().required().min(3).max(30),
-    price: yup.number().required().positive().integer(),
-    origin: yup.string().required().oneOf(originsForShema, "Invalid Origin!!!"),
+    price: yup.number().positive().integer().required(),
+    origin: yup.string().oneOf(originsForShema, "Invalid Origin!!!").required(),
   });
 
   const {
@@ -75,7 +75,6 @@ export const PorductForm: React.FC<TProps> = ({ values, buttons, submitHandler }
               className={cn(s.form__buttons__button, {
                 [s.submit]: button.style === "submit",
                 [s.reset]: button.style === "reset",
-                [s.disabled]: button.style === "submit" && !isDirty,
               })}
               disabled={!isDirty}
             >

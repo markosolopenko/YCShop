@@ -27,8 +27,8 @@ export const CreateProductModal: React.FC<TProps> = ({ setClose }) => {
         name,
         price,
         origin,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: Date(),
+        updatedAt: Date(),
       })
     );
     setClose();

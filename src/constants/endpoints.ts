@@ -5,3 +5,5 @@ export const API_ENDPOINTS = {
   PRODUCTS_ORIGINS: "/products-origins",
   ORDERS: "/orders",
 };
+
+export const API_KEY = process.env.REACT_APP_AUTHORIZATION_KEY;
