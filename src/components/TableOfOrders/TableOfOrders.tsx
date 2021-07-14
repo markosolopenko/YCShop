@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import s from "./TableOfOrders.module.scss";
@@ -7,19 +8,20 @@ import { Routes } from "../../constants/routes";
 import { TProps } from "./types";
 import { setOrderId } from "../../features/orders/ordersSlice";
 
+const theadItems: string[] = ["Date and Time", "Product", "Amount", "Origin", "Total", ""];
+
 export const TableOfOrders: React.FC<TProps> = ({ orders }) => {
   const dispatch = useDispatch();
-
+  const handleDetailsButtonClick = useCallback((id: string) => {
+    dispatch(setOrderId(id));
+  }, []);
   return (
     <table className={s["table-of-orders"]}>
       <thead className={s["table-of-orders__thead"]}>
         <tr>
-          <th>Date and Time</th>
-          <th>Product</th>
-          <th>Amount</th>
-          <th>Origin</th>
-          <th>Total</th>
-          <th></th>
+          {theadItems.map((item, index) => {
+            return <th key={index}>{item}</th>;
+          })}
         </tr>
       </thead>
       <tbody className={s["table-of-orders__tbody"]}>
@@ -38,7 +40,7 @@ export const TableOfOrders: React.FC<TProps> = ({ orders }) => {
                       <Link
                         to={Routes.ORDER_DETAILS}
                         className={s.details}
-                        onClick={() => dispatch(setOrderId(order.id))}
+                        onClick={() => handleDetailsButtonClick(order.id)}
                       >
                         Details
                       </Link>
