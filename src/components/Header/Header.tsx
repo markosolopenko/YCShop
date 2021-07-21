@@ -22,9 +22,6 @@ export const Header: React.FC = () => {
   const location = useLocation();
 
   const { state: isOpen, setOpen, setClose } = useModal(false);
-  const handleOpenModalClick = () => {
-    setOpen();
-  };
 
   return (
     <div className={s.header}>
@@ -32,7 +29,7 @@ export const Header: React.FC = () => {
         <div className={s.header__logo__text}>Yalantis Shop</div>
       </div>
       <div className={s.header__blocks}>
-        <div className={s.header__blocks__modal} onClick={handleOpenModalClick}>
+        <div className={s.header__blocks__modal} onClick={setOpen}>
           Create Product
         </div>
       </div>

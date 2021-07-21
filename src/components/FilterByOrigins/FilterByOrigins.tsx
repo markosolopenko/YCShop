@@ -1,5 +1,5 @@
 import { setSlectedOrigins } from "features/products/productsSlice";
-import { getOrigins } from "features/products/selectors";
+import { getOrigins, getSelectedOrigins } from "features/products/selectors";
 import { ISelectedOrigins } from "features/products/types";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,15 +8,15 @@ import s from "./FilterByOrigins.module.scss";
 
 export const FilterByOrigins: React.FC = () => {
   const origins = useSelector(getOrigins);
+  const selectedOrigins = useSelector(getSelectedOrigins);
   const dispatch = useDispatch();
   const options = useMemo(
     () =>
-      origins.map(
-        (origin) =>
-          new Object({
-            value: origin.value,
-            label: origin.displayName,
-          })
+      origins.map((origin) =>
+        Object({
+          value: origin.value,
+          label: origin.displayName,
+        })
       ),
     [origins]
   );
@@ -35,6 +35,7 @@ export const FilterByOrigins: React.FC = () => {
         className="basic-multi-select"
         classNamePrefix="select"
         onChange={handleSelect}
+        defaultValue={selectedOrigins}
       />
     </div>
   );

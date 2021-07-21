@@ -15,7 +15,7 @@ export type TGetOriginsParams = {
 export type TGetProductsParams = {
   page?: number;
   perPage?: number;
-  origins: ISelectedOrigins[] | [];
+  origins: ISelectedOrigins[];
   minPrice?: string;
   maxPrice?: string;
   isEditable?: boolean;

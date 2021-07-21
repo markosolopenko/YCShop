@@ -1,6 +1,7 @@
 import { setRangePrices } from "features/products/productsSlice";
+import { getParams } from "features/products/selectors";
 import React, { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import s from "./FilterByPrice.module.scss";
 
 type TStateValues = {
@@ -8,7 +9,8 @@ type TStateValues = {
   max: string;
 };
 export const FilterByPrice: React.FC = () => {
-  const [values, setValues] = useState<TStateValues>({ min: "", max: "" });
+  const { minPrice, maxPrice } = useSelector(getParams);
+  const [values, setValues] = useState<TStateValues>({ min: minPrice || "", max: maxPrice || "" });
   const dispatch = useDispatch();
 
   const handleInputsChange = useCallback(
@@ -24,9 +26,7 @@ export const FilterByPrice: React.FC = () => {
   );
   const { min, max } = values;
   const handleFilterClick = useCallback(() => {
-    if (max !== "" || min !== "") {
-      dispatch(setRangePrices(values));
-    }
+    dispatch(setRangePrices(values));
   }, [values]);
 
   return (
@@ -38,6 +38,7 @@ export const FilterByPrice: React.FC = () => {
         className={s["filter-by-price__input"]}
         onChange={handleInputsChange}
         value={min}
+        min={0}
       />
       <input
         type="number"
@@ -45,6 +46,7 @@ export const FilterByPrice: React.FC = () => {
         className={s["filter-by-price__input"]}
         onChange={handleInputsChange}
         value={max}
+        min={0}
       />
       <button className={s["filter-by-price__button"]} onClick={handleFilterClick}>
         Filter

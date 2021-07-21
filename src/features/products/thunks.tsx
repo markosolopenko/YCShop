@@ -9,9 +9,11 @@ import {
 import { IFormData } from "components/ProductForm/types";
 import { IUpdateProduct } from "types/types";
 import { updateProduct } from "../../api/productsRequests";
+import { API_ENDPOINTS } from "../../constants/endpoints";
+const { PRODUCTS, PRODUCTS_ORIGINS } = API_ENDPOINTS;
 
 export const fetchProductsThunk = createAsyncThunk(
-  "products/getProducts",
+  `${PRODUCTS}/getProducts`,
   async (data: TGetProductsParams) => {
     const { page, perPage, origins, minPrice, maxPrice, isEditable } = data;
     const response = await getProducts({ page, perPage, origins, minPrice, maxPrice, isEditable });
@@ -21,20 +23,20 @@ export const fetchProductsThunk = createAsyncThunk(
 );
 
 export const fetchProductByIdThunk = createAsyncThunk(
-  "products/getProductById",
+  `${PRODUCTS}/getProductById`,
   async (id: string) => {
     const response = await getProductById(id);
     return response.data;
   }
 );
 
-export const getOriginsThunk = createAsyncThunk("products/getOrigins", async () => {
+export const getOriginsThunk = createAsyncThunk(`${PRODUCTS_ORIGINS}/getOrigins`, async () => {
   const response = await getOrigins();
   return response.data;
 });
 
 export const createProductThunk = createAsyncThunk(
-  "products/createProduct",
+  `${PRODUCTS}/createProduct`,
   async (data: IFormData) => {
     const response = await createProduct(data);
 
@@ -43,7 +45,7 @@ export const createProductThunk = createAsyncThunk(
 );
 
 export const updateProductThunk = createAsyncThunk(
-  "products/updateProduct",
+  `${PRODUCTS}/updateProduct`,
   async (data: IUpdateProduct) => {
     const response = await updateProduct(data);
 

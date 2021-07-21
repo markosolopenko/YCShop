@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type ReturnType = {
   setToogle: () => void;
@@ -10,15 +10,15 @@ type ReturnType = {
 export const useModal = (isOpen: boolean): ReturnType => {
   const [state, setState] = useState(isOpen);
 
-  const setOpen = () => {
+  const setOpen = useCallback(() => {
     setState(true);
-  };
-  const setClose = () => {
+  }, []);
+  const setClose = useCallback(() => {
     setState(false);
-  };
-  const setToogle = () => {
+  }, []);
+  const setToogle = useCallback(() => {
     setState(!state);
-  };
+  }, []);
 
   return { setToogle, setOpen, setClose, state };
 };

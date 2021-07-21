@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { getAllItemsInCartSum, getProductsAddedToCart } from "features/products/selectors";
 import { formatMoney } from "helpers/formatMoney";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +17,7 @@ export const ProductsCart: React.FC = () => {
   const dispatch = useDispatch();
   const orderCreated = useSelector(selectIfOrderCreated);
 
-  const makeOrder = () => {
+  const makeOrder = useCallback(() => {
     dispatch(
       createNewOrderThunk(
         productsAddedToCart.map((item) =>
@@ -25,7 +26,7 @@ export const ProductsCart: React.FC = () => {
       )
     );
     dispatch(clearCart());
-  };
+  }, []);
   if (orderCreated) {
     return <Redirect to={Routes.ORDERS} />;
   }

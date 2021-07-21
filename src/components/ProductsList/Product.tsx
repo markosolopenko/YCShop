@@ -20,6 +20,10 @@ export const Product: React.FC<IProps> = ({ item, button }) => {
     dispatch(fetchProductByIdThunk(item.id));
   }, []);
 
+  const handleAddToCartClick = useCallback(() => {
+    button?.handleFunction(item);
+  }, []);
+
   return (
     <div className={s.product}>
       <div className={s.product__item}>
@@ -40,10 +44,7 @@ export const Product: React.FC<IProps> = ({ item, button }) => {
             </button>
           </Link>
         )}
-        <button
-          onClick={() => button?.handleFunction(item)}
-          className={s.product__buttons__addToCartBtn}
-        >
+        <button onClick={handleAddToCartClick} className={s.product__buttons__addToCartBtn}>
           {button?.text}
         </button>
       </div>

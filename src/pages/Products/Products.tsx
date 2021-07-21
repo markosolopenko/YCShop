@@ -16,6 +16,7 @@ import {
 } from "features/products/selectors";
 import { PENDING } from "constants/status";
 import { Loader } from "components/Loader/Loader";
+import { openNotificationWithIcon } from "helpers/notification";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
 import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
@@ -58,9 +59,10 @@ export const Products: React.FC = () => {
   const handleAddToCartClick: (item: IProduct) => void = useCallback((item: IProduct) => {
     dispatch(addToCartAction({ product: item, operator: plus, amount: 1 }));
     dispatch(changeCartCountsAtion());
+    openNotificationWithIcon("success", "Add to cart", "Item has been added to cart");
   }, []);
 
-  if (status === PENDING && products.length === 0) {
+  if (status === PENDING) {
     return <Loader />;
   }
 

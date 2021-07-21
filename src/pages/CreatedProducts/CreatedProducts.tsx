@@ -54,7 +54,7 @@ export const CreatedProducts: React.FC = () => {
     setEditProduct(item);
   };
 
-  if (status === PENDING && products.length === 0) {
+  if (status === PENDING) {
     return <Loader />;
   }
 
