@@ -29,9 +29,13 @@ export const PorductForm: React.FC<TProps> = ({ values, submitHandler }) => {
     reset,
     control,
     formState: { errors },
-  } = useForm<IFormData>({ resolver: yupResolver(schema), defaultValues: values });
+  } = useForm<IFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: values,
+    mode: "onChange",
+  });
 
-  const { isDirty } = useFormState({ control });
+  const { dirtyFields } = useFormState({ control });
 
   const onSubmit = handleSubmit((data) => {
     submitHandler(data);
@@ -70,10 +74,24 @@ export const PorductForm: React.FC<TProps> = ({ values, submitHandler }) => {
       </select>
       <div className={s.form__errors}>{errors.origin?.message}</div>
       <div className={s.form__buttons}>
-        <button onClick={handleResetClick} className={s.form__buttons__reset} disabled={!isDirty}>
+        <button
+          onClick={handleResetClick}
+          className={s.form__buttons__reset}
+          disabled={
+            Object.keys(errors).length !== 0 ||
+            Object.keys(dirtyFields).length !== Object.keys(values).length
+          }
+        >
           Reset
         </button>
-        <button onClick={onSubmit} className={s.form__buttons__submit} disabled={!isDirty}>
+        <button
+          onClick={onSubmit}
+          className={s.form__buttons__submit}
+          disabled={
+            Object.keys(errors).length !== 0 ||
+            Object.keys(dirtyFields).length !== Object.keys(values).length
+          }
+        >
           Submit
         </button>
       </div>

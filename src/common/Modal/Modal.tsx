@@ -1,5 +1,4 @@
 import React from "react";
-
 import { IPropsModal } from "./types";
 import { ReactComponent as Cancel } from "../../assets/cancel.svg";
 import s from "./Modal.module.scss";

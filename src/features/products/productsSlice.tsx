@@ -30,6 +30,7 @@ const initialState: IProductsSliceState = {
   maxPrice: "",
   isEditable: false,
   createdProducts: [],
+  isProductCreated: false,
 };
 
 const productsSlice = createSlice({
@@ -123,13 +124,16 @@ const productsSlice = createSlice({
     builder
       .addCase(createProductThunk.pending, (state) => {
         state.status = PENDING;
+        state.isProductCreated = false;
       })
       .addCase(createProductThunk.fulfilled, (state) => {
         state.status = FULFILLED;
+        state.isProductCreated = true;
       })
       .addCase(createProductThunk.rejected, (state) => {
         state.status = REJECTED;
         state.error = "Erorr createProduct";
+        state.isProductCreated = false;
       });
     builder
       .addCase(updateProductThunk.fulfilled, (state) => {
