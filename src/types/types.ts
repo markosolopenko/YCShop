@@ -1,3 +1,5 @@
+import { ISelectedOrigins } from "features/products/types";
+
 export interface IProduct {
   isEditable: boolean;
   id: string;
@@ -27,4 +29,13 @@ export interface IUpdateProduct {
     price: number;
     origin: string;
   };
+}
+
+export interface IProductParams {
+  page: number;
+  perPage: number;
+  origins: ISelectedOrigins[];
+  minPrice: string | undefined;
+  maxPrice: string | undefined;
+  isEditable: boolean;
 }

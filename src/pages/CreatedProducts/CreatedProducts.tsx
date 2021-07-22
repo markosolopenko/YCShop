@@ -5,15 +5,9 @@ import { FilterProductsPerPage } from "components/FilterProductsPerPage/FilterPr
 import { Loader } from "components/Loader/Loader";
 import { ProductsList } from "components/ProductsList/ProductsList";
 import { PENDING } from "constants/status";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setIsEditable, loadMoreProducts } from "features/products/productsSlice";
-import {
-  getParams,
-  getProductsList,
-  getRange,
-  getStatus,
-  selectIsProductCreated,
-} from "features/products/selectors";
+import { useSelectorsForCreatedProducts } from "hooks/useSelectorsForCreatedProducts";
 import { EditProductModal } from "components/EditProductModal/EditProductModal";
 
 import { IProduct } from "../../types/types";
@@ -23,11 +17,8 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import s from "./CreatedProducts.module.scss";
 
 export const CreatedProducts: React.FC = () => {
-  const products = useSelector(getProductsList);
-  const status = useSelector(getStatus);
-  const range = useSelector(getRange);
-  const params = useSelector(getParams);
-  const isProductCereated = useSelector(selectIsProductCreated);
+  const { params, isProductCereated, productsStatus, products, range } =
+    useSelectorsForCreatedProducts();
   const [editProduct, setEditProduct] = useState<IProduct>({
     isEditable: false,
     id: "",
@@ -61,7 +52,7 @@ export const CreatedProducts: React.FC = () => {
     setEditProduct(item);
   };
 
-  if (status === PENDING && isProductCereated !== "start") {
+  if (productsStatus === PENDING && isProductCereated !== "start") {
     return <Loader />;
   }
 

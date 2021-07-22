@@ -31,6 +31,7 @@ export const selectIsProductCreated = (state: RootState): string => state.produc
 
 export const selectProductError = (state: RootState): string | undefined | unknown =>
   state.products.error;
+
 export const getParams = createSelector(
   getCurrentPage,
   getPerPage,

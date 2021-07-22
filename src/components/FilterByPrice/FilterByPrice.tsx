@@ -1,4 +1,4 @@
-import { setRangePrices } from "features/products/productsSlice";
+import { loadMoreProducts, setRangePrices } from "features/products/productsSlice";
 import { getParams } from "features/products/selectors";
 import React, { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,7 @@ export const FilterByPrice: React.FC = () => {
   const { min, max } = values;
   const handleFilterClick = useCallback(() => {
     dispatch(setRangePrices(values));
+    dispatch(loadMoreProducts(1));
   }, [values]);
 
   return (
