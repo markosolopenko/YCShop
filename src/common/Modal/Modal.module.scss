@@ -1,0 +1,36 @@
+.modal {
+  background-color: white;
+  min-width: 530px;
+  min-height: 270px;
+  color: #4e4b4b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__title {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #e5e5e5;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+
+    &__icon {
+      width: 25px;
+      height: 25px;
+      color: #807d7d;
+      &:hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
+  &__content {
+    padding: 20px;
+
+    display: flex;
+    justify-content: center;
+  }
+}

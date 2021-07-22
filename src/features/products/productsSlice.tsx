@@ -4,8 +4,14 @@ import { PENDING, FULFILLED, REJECTED } from "constants/status";
 import { addToCart } from "helpers/addToCart";
 import { changeCartCounts } from "helpers/changeCartCounts";
 
-import { fetchProductByIdThunk, fetchProductsThunk, getOriginsThunk } from "./thunks";
+import {
+  createProductThunk,
+  fetchProductByIdThunk,
+  fetchProductsThunk,
+  getOriginsThunk,
+} from "./thunks";
 import { IProductsSliceState } from "./types";
+import { updateProductThunk } from "./thunks";
 
 const initialState: IProductsSliceState = {
   status: null,
@@ -17,11 +23,14 @@ const initialState: IProductsSliceState = {
   totalItems: 0,
   allItemsInCartAmount: 0,
   allItemsInCartSum: 0,
-  error: null,
+  error: "",
   origins: [],
   selectedOrigins: [],
   minPrice: "",
   maxPrice: "",
+  isEditable: false,
+  createdProducts: [],
+  isProductCreated: "",
 };
 
 const productsSlice = createSlice({
@@ -57,6 +66,34 @@ const productsSlice = createSlice({
     changeAmountOfPorductsPerPage(state, action) {
       state.perPage = action.payload;
     },
+    setIsEditable(state, action) {
+      state.isEditable = action.payload;
+      state.products = [];
+      state.minPrice = "";
+      state.maxPrice = "";
+      state.currentPage = 1;
+      state.perPage = 10;
+    },
+    updateProductInList(state, action) {
+      const { id, product } = action.payload;
+      const { name, price, origin } = product;
+      state.products = state.products.map((item) =>
+        item.id === id ? { ...item, name, price, origin } : item
+      );
+    },
+    createNewProduct(state, action) {
+      state.createdProducts = [...state.createdProducts, action.payload];
+      state.products = [...state.products, action.payload];
+    },
+    clearCart(state) {
+      state.productsAddedToCart = [];
+      state.allItemsInCartAmount = 0;
+      state.allItemsInCartSum = 0;
+    },
+    cleareCreatedProducts(state) {
+      state.createdProducts = [];
+      state.isProductCreated = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -70,7 +107,7 @@ const productsSlice = createSlice({
         state.totalItems = totalItems;
       })
       .addCase(fetchProductsThunk.rejected, (state) => {
-        state.error = "Error fetchProdcuts";
+        state.error = "Error fetchProducts";
         state.status = REJECTED;
       });
     builder
@@ -88,6 +125,32 @@ const productsSlice = createSlice({
     builder.addCase(getOriginsThunk.fulfilled, (state, action) => {
       state.origins = action.payload.items;
     });
+    builder
+      .addCase(createProductThunk.pending, (state) => {
+        state.status = PENDING;
+        state.isProductCreated = "start";
+      })
+      .addCase(createProductThunk.fulfilled, (state) => {
+        state.status = FULFILLED;
+        state.isProductCreated = "success";
+      })
+      .addCase(createProductThunk.rejected, (state, action) => {
+        const string: string | unknown = action.payload;
+        state.status = REJECTED;
+        state.error = string;
+        state.isProductCreated = "error";
+      });
+    builder
+      .addCase(updateProductThunk.fulfilled, (state) => {
+        state.status = FULFILLED;
+      })
+      .addCase(updateProductThunk.pending, (state) => {
+        state.status = PENDING;
+      })
+      .addCase(updateProductThunk.rejected, (state) => {
+        state.status = REJECTED;
+        state.error = "Error updateProduct";
+      });
   },
 });
 
@@ -101,4 +164,9 @@ export const {
   loadMoreProducts,
   setRangePrices,
   changeAmountOfPorductsPerPage,
+  setIsEditable,
+  updateProductInList,
+  createNewProduct,
+  clearCart,
+  cleareCreatedProducts,
 } = productsSlice.actions;

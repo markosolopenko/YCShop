@@ -1,0 +1,9 @@
+.created-products {
+  padding: 20px;
+  &__filters {
+    display: flex;
+    justify-content: space-around;
+
+    padding: 5px 0 20px 0;
+  }
+}

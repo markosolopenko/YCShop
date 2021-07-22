@@ -11,7 +11,7 @@ import {
   deleteFromCart,
 } from "features/products/productsSlice";
 import { Counter } from "../../components/Counter/Counter";
-import { ReactComponent as DeleteIcon } from "../../assets/trash-alt-solid.svg";
+import { DeleteButton } from "../../common/DeleteButton/DeleteButton";
 import s from "./ProductInCart.module.scss";
 
 type IProps = {
@@ -45,8 +45,8 @@ export const ProductInCart: React.FC<IProps> = ({ item }) => {
       <div className={s["product-in-cart__total"]}>
         {item.product.price}$ x {item.amount} ={formatMoney(item.product.price * item.amount)}
       </div>
-      <div className={s["product-in-cart__delete"]} onClick={handleDeleteProduct}>
-        <DeleteIcon className={s["product-in-cart__delete__icon"]} />
+      <div className={s["product-in-cart__delete"]}>
+        <DeleteButton onClick={handleDeleteProduct} />
       </div>
     </div>
   );

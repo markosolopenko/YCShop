@@ -22,8 +22,15 @@ export const getSelectedOrigins = (state: RootState): ISelectedOrigins[] =>
 
 export const getMinPrice = (state: RootState): string => state.products.minPrice;
 export const getMaxPrice = (state: RootState): string => state.products.maxPrice;
+export const selectCreatedProducts = (state: RootState): IProduct[] =>
+  state.products.createdProducts;
 
 export const getStatus = (state: RootState): string | null => state.products.status;
+export const getIsEditable = (state: RootState): boolean => state.products.isEditable;
+export const selectIsProductCreated = (state: RootState): string => state.products.isProductCreated;
+
+export const selectProductError = (state: RootState): string | undefined | unknown =>
+  state.products.error;
 
 export const getParams = createSelector(
   getCurrentPage,
@@ -31,12 +38,14 @@ export const getParams = createSelector(
   getSelectedOrigins,
   getMinPrice,
   getMaxPrice,
-  (page, perPage, selectedOrigins, minPrice, maxPrice) => ({
+  getIsEditable,
+  (page, perPage, selectedOrigins, minPrice, maxPrice, isEditable) => ({
     page,
     perPage,
     origins: selectedOrigins || undefined,
     minPrice: minPrice || undefined,
     maxPrice: maxPrice || undefined,
+    isEditable,
   })
 );
 
