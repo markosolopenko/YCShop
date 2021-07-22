@@ -27,10 +27,10 @@ export const selectCreatedProducts = (state: RootState): IProduct[] =>
 
 export const getStatus = (state: RootState): string | null => state.products.status;
 export const getIsEditable = (state: RootState): boolean => state.products.isEditable;
-export const selectIsProductCreated = (state: RootState): boolean =>
-  state.products.isProductCreated;
+export const selectIsProductCreated = (state: RootState): string => state.products.isProductCreated;
 
-export const selectProductError = (state: RootState): string | null => state.products.error;
+export const selectProductError = (state: RootState): string | undefined | unknown =>
+  state.products.error;
 export const getParams = createSelector(
   getCurrentPage,
   getPerPage,

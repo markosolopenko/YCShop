@@ -37,10 +37,14 @@ export const getOriginsThunk = createAsyncThunk(`${PRODUCTS_ORIGINS}/getOrigins`
 
 export const createProductThunk = createAsyncThunk(
   `${PRODUCTS}/createProduct`,
-  async (data: IFormData) => {
-    const response = await createProduct(data);
-
-    return response.data;
+  async (data: IFormData, { rejectWithValue }) => {
+    try {
+      const response = await createProduct(data);
+      return response;
+    } catch (error) {
+      const responseError: string = error.response.data.error.message;
+      return rejectWithValue(responseError);
+    }
   }
 );
 

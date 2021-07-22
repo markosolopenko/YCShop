@@ -43,8 +43,9 @@ export const getOrigins = async (): Promise<{ data: { items: TGetOriginsParams[]
   return await axiosInstance.get(PRODUCTS_ORIGINS);
 };
 
-export const createProduct = async (data: IFormData): Promise<{ data: string }> => {
-  return await axiosInstance.post(PRODUCTS, { product: data });
+export const createProduct = async (data: IFormData): Promise<ResponseType | Error> => {
+  const res = await axiosInstance.post(PRODUCTS, { product: data });
+  return res.data;
 };
 
 export const updateProduct = async (data: IUpdateProduct): Promise<{ data: string }> => {

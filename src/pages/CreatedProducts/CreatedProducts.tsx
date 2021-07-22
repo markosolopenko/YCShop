@@ -7,7 +7,13 @@ import { ProductsList } from "components/ProductsList/ProductsList";
 import { PENDING } from "constants/status";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsEditable, loadMoreProducts } from "features/products/productsSlice";
-import { getParams, getProductsList, getRange, getStatus } from "features/products/selectors";
+import {
+  getParams,
+  getProductsList,
+  getRange,
+  getStatus,
+  selectIsProductCreated,
+} from "features/products/selectors";
 import { EditProductModal } from "components/EditProductModal/EditProductModal";
 
 import { IProduct } from "../../types/types";
@@ -21,6 +27,7 @@ export const CreatedProducts: React.FC = () => {
   const status = useSelector(getStatus);
   const range = useSelector(getRange);
   const params = useSelector(getParams);
+  const isProductCereated = useSelector(selectIsProductCreated);
   const [editProduct, setEditProduct] = useState<IProduct>({
     isEditable: false,
     id: "",
@@ -54,7 +61,7 @@ export const CreatedProducts: React.FC = () => {
     setEditProduct(item);
   };
 
-  if (status === PENDING) {
+  if (status === PENDING && isProductCereated !== "start") {
     return <Loader />;
   }
 

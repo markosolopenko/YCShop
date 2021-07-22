@@ -16,12 +16,12 @@ export interface IProductsSliceState {
   totalItems: number;
   allItemsInCartAmount: number;
   allItemsInCartSum: number;
-  error: string | null;
+  error: string | undefined | unknown;
   origins: TGetOriginsParams[];
   selectedOrigins: ISelectedOrigins[];
   minPrice: string;
   maxPrice: string;
   isEditable: boolean;
   createdProducts: IProduct[];
-  isProductCreated: boolean;
+  isProductCreated: string;
 }

@@ -23,14 +23,14 @@ const initialState: IProductsSliceState = {
   totalItems: 0,
   allItemsInCartAmount: 0,
   allItemsInCartSum: 0,
-  error: null,
+  error: "",
   origins: [],
   selectedOrigins: [],
   minPrice: "",
   maxPrice: "",
   isEditable: false,
   createdProducts: [],
-  isProductCreated: false,
+  isProductCreated: "",
 };
 
 const productsSlice = createSlice({
@@ -90,6 +90,10 @@ const productsSlice = createSlice({
       state.allItemsInCartAmount = 0;
       state.allItemsInCartSum = 0;
     },
+    cleareCreatedProducts(state) {
+      state.createdProducts = [];
+      state.isProductCreated = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -124,16 +128,17 @@ const productsSlice = createSlice({
     builder
       .addCase(createProductThunk.pending, (state) => {
         state.status = PENDING;
-        state.isProductCreated = false;
+        state.isProductCreated = "start";
       })
       .addCase(createProductThunk.fulfilled, (state) => {
         state.status = FULFILLED;
-        state.isProductCreated = true;
+        state.isProductCreated = "success";
       })
-      .addCase(createProductThunk.rejected, (state) => {
+      .addCase(createProductThunk.rejected, (state, action) => {
+        const string: string | unknown = action.payload;
         state.status = REJECTED;
-        state.error = "Erorr createProduct";
-        state.isProductCreated = false;
+        state.error = string;
+        state.isProductCreated = "error";
       });
     builder
       .addCase(updateProductThunk.fulfilled, (state) => {
@@ -163,4 +168,5 @@ export const {
   updateProductInList,
   createNewProduct,
   clearCart,
+  cleareCreatedProducts,
 } = productsSlice.actions;

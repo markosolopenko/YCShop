@@ -8,7 +8,7 @@ import {
 } from "features/products/selectors";
 import { openNotificationWithIcon } from "helpers/notification";
 import { TProps } from "./types";
-import { createNewProduct } from "../../features/products/productsSlice";
+import { createNewProduct, cleareCreatedProducts } from "../../features/products/productsSlice";
 import { IFormData } from "../ProductForm/types";
 import { createProductThunk } from "../../features/products/thunks";
 
@@ -17,19 +17,24 @@ const values = { name: "", price: 0, origin: "..." };
 export const CreateProductModal: React.FC<TProps> = ({ setClose }) => {
   const dispatch = useDispatch();
   const isProductCreated = useSelector(selectIsProductCreated);
-  const cretaeProducts = useSelector(selectCreatedProducts);
-  const error = useSelector(selectProductError);
+  const cretaedProducts = useSelector(selectCreatedProducts);
+  const errorMessage = useSelector(selectProductError);
 
   useEffect(() => {
-    if (cretaeProducts.length > 0) {
-      if (isProductCreated) {
+    if (cretaedProducts.length > 0) {
+      if (isProductCreated === "success") {
         openNotificationWithIcon("success", "Create product", "Product has been created!");
         setClose();
       } else {
-        openNotificationWithIcon("error", "Create product", "Product name already exist!!!");
+        openNotificationWithIcon(
+          "error",
+          "Create product",
+          typeof errorMessage === "string" ? errorMessage : "Something went wrong!!!"
+        );
       }
+      dispatch(cleareCreatedProducts());
     }
-  }, [isProductCreated, error]);
+  }, [isProductCreated, errorMessage]);
 
   const onSubmit = useCallback((data: IFormData) => {
     const { name, price, origin } = data;

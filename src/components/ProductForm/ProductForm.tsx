@@ -39,6 +39,7 @@ export const PorductForm: React.FC<TProps> = ({ values, submitHandler }) => {
 
   const onSubmit = handleSubmit((data) => {
     submitHandler(data);
+    reset();
   });
   const handleResetClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
