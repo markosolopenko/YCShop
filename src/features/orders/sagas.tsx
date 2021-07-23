@@ -1,6 +1,6 @@
 import { createOrder, getOrderById } from "api/ordersRequests";
 import { getProductsAddedToCart } from "features/products/selectors";
-import { takeEvery, call, put, select, debounce } from "redux-saga/effects";
+import { takeEvery, call, put, select } from "redux-saga/effects";
 import { IProductsInCart } from "types/types";
 import {
   setOrderByIdFulfilled,
@@ -27,10 +27,12 @@ function* fetchOrderByIdWorker() {
 function* createOrderWorker() {
   try {
     const products: IProductsInCart[] = yield select(getProductsAddedToCart);
+
     yield call(
       createOrder,
       products.map((item) => Object({ productId: item.product.id, count: item.amount }))
     );
+
     yield put(createOrderFulfilled());
   } catch (error) {
     yield put(createOrderRejected(error));
@@ -38,7 +40,7 @@ function* createOrderWorker() {
 }
 
 export function* getOrderByIdSaga(): Generator {
-  yield debounce(1000, setOrderByIdPending.type, fetchOrderByIdWorker);
+  yield takeEvery(setOrderByIdPending.type, fetchOrderByIdWorker);
 }
 
 export function* createNewOrderSaga(): Generator {

@@ -35,12 +35,15 @@ const ordersSlice = createSlice({
     },
     createOrderRejected(state, action) {
       state.status = REJECTED;
-      state.error = action.payload.message;
+      state.error = action.payload;
       state.orderCreated = "error";
     },
     createOrderFulfilled(state) {
       state.status = FULFILLED;
       state.orderCreated = "success";
+    },
+    resetStatus(state) {
+      state.orderCreated = "";
     },
   },
   extraReducers: (builder) => {
@@ -96,4 +99,5 @@ export const {
   createOrderFulfilled,
   createOrderPending,
   createOrderRejected,
+  resetStatus,
 } = ordersSlice.actions;

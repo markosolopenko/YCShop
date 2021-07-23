@@ -5,10 +5,13 @@ import { API_ENDPOINTS } from "../../constants/endpoints";
 
 export const createNewOrderThunk = createAsyncThunk(
   `${API_ENDPOINTS.ORDERS}/createNewOrder`,
-  async (data: TOrder[]) => {
-    const response = await createOrder(data);
-
-    return response.data;
+  async (data: TOrder[], { rejectWithValue }) => {
+    try {
+      const response = await createOrder(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   }
 );
 
