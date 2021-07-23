@@ -1,11 +1,12 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { getAllItemsInCartSum, getProductsAddedToCart } from "features/products/selectors";
 import { formatMoney } from "helpers/formatMoney";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIfOrderCreated } from "features/orders/selectors";
+import { openNotificationWithIcon } from "helpers/notification";
+import { createOrderPending } from "features/orders/ordersSlice";
+import { selectError, selectIfOrderCreated } from "features/orders/selectors";
 import { Redirect } from "react-router-dom";
 import { ProductInCart } from "../../components/ProductInCart/ProductInCart";
-import { createNewOrderThunk } from "../../features/orders/thunks";
 import { clearCart } from "../../features/products/productsSlice";
 import { Routes } from "../../constants/routes";
 import EmptyCart from "../../assets/empty-cart.png";
@@ -16,18 +17,21 @@ export const ProductsCart: React.FC = () => {
   const allItemsInCartSum = useSelector(getAllItemsInCartSum);
   const dispatch = useDispatch();
   const orderCreated = useSelector(selectIfOrderCreated);
+  const errorOrder = useSelector(selectError);
 
+  useEffect(() => {
+    if (orderCreated === "success") {
+      dispatch(clearCart());
+      openNotificationWithIcon("success", "Make Order", "Order created successfully!!!");
+    } else if (orderCreated === "error") {
+      openNotificationWithIcon("error", "Make Order", errorOrder);
+    }
+  }, [orderCreated]);
   const makeOrder = useCallback(() => {
-    dispatch(
-      createNewOrderThunk(
-        productsAddedToCart.map((item) =>
-          Object({ productId: item.product.id, count: item.amount })
-        )
-      )
-    );
-    dispatch(clearCart());
+    dispatch(createOrderPending());
   }, []);
-  if (orderCreated) {
+
+  if (orderCreated === "success") {
     return <Redirect to={Routes.ORDERS} />;
   }
 

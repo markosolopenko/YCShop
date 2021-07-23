@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNewOrderThunk, getOrdersThunk } from "./thunks";
+import { getOrdersThunk } from "./thunks";
 import { IInitStateOrders } from "./types";
 import { PENDING, REJECTED, FULFILLED } from "../../constants/status";
 
@@ -7,7 +7,7 @@ const initialState: IInitStateOrders = {
   orders: [],
   status: "",
   error: "",
-  orderCreated: false,
+  orderCreated: "",
   orderId: "",
   order: null,
 };
@@ -30,22 +30,20 @@ const ordersSlice = createSlice({
     setOrderByIdPending(state) {
       state.status = PENDING;
     },
+    createOrderPending(state) {
+      state.status = PENDING;
+    },
+    createOrderRejected(state, action) {
+      state.status = REJECTED;
+      state.error = action.payload.message;
+      state.orderCreated = "error";
+    },
+    createOrderFulfilled(state) {
+      state.status = FULFILLED;
+      state.orderCreated = "success";
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(createNewOrderThunk.pending, (state) => {
-        state.status = PENDING;
-        state.orderCreated = false;
-      })
-      .addCase(createNewOrderThunk.fulfilled, (state) => {
-        state.status = FULFILLED;
-        state.orderCreated = true;
-      })
-      .addCase(createNewOrderThunk.rejected, (state) => {
-        state.error = "Error orders/createOrder";
-        state.status = REJECTED;
-        state.orderCreated = false;
-      });
     builder
       .addCase(getOrdersThunk.pending, (state) => {
         state.status = PENDING;
@@ -58,6 +56,21 @@ const ordersSlice = createSlice({
         state.error = "Error orders/getOrders";
         state.status = REJECTED;
       });
+    // builder
+    // .addCase(createNewOrderThunk.pending, (state) => {
+    //   state.status = PENDING;
+    //   state.orderCreated = false;
+    // })
+    // .addCase(createNewOrderThunk.fulfilled, (state) => {
+    //   state.status = FULFILLED;
+    //   state.orderCreated = true;
+    // })
+    // .addCase(createNewOrderThunk.rejected, (state) => {
+    //   state.error = "Error orders/createOrder";
+    //   state.status = REJECTED;
+    //   state.orderCreated = false;
+    // });
+
     // builder
     //   .addCase(getOrderByIdThunk.pending, (state) => {
     //     state.status = PENDING;
@@ -75,5 +88,12 @@ const ordersSlice = createSlice({
 
 export default ordersSlice.reducer;
 
-export const { setOrderId, setOrderByIdFulfilled, setOrderByIdRejected, setOrderByIdPending } =
-  ordersSlice.actions;
+export const {
+  setOrderId,
+  setOrderByIdFulfilled,
+  setOrderByIdRejected,
+  setOrderByIdPending,
+  createOrderFulfilled,
+  createOrderPending,
+  createOrderRejected,
+} = ordersSlice.actions;

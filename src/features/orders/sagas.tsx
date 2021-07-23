@@ -1,20 +1,46 @@
-import { getOrderById } from "api/ordersRequests";
-import { takeEvery, call, put, select } from "redux-saga/effects";
-import { setOrderByIdFulfilled, setOrderByIdPending, setOrderByIdRejected } from "./ordersSlice";
+import { createOrder, getOrderById } from "api/ordersRequests";
+import { getProductsAddedToCart } from "features/products/selectors";
+import { takeEvery, call, put, select, debounce } from "redux-saga/effects";
+import { IProductsInCart } from "types/types";
+import {
+  setOrderByIdFulfilled,
+  setOrderByIdPending,
+  setOrderByIdRejected,
+  createOrderFulfilled,
+  createOrderRejected,
+  createOrderPending,
+} from "./ordersSlice";
 import { selectOrderId } from "./selectors";
+import { TOrderGet } from "./types";
 
-function* onFetchOrderByIdSaga(): Generator {
+function* fetchOrderByIdWorker() {
   try {
-    const id = yield select(selectOrderId);
+    const id: string = yield select(selectOrderId);
 
-    const order = yield call(getOrderById, `${id}`);
-
+    const order: TOrderGet[] = yield call(getOrderById, `${id}`);
     yield put(setOrderByIdFulfilled(order));
   } catch (error) {
     yield put(setOrderByIdRejected(error));
   }
 }
 
-export function* orderByIdSaga(): Generator {
-  yield takeEvery(setOrderByIdPending.type, onFetchOrderByIdSaga);
+function* createOrderWorker() {
+  try {
+    const products: IProductsInCart[] = yield select(getProductsAddedToCart);
+    yield call(
+      createOrder,
+      products.map((item) => Object({ productId: item.product.id, count: item.amount }))
+    );
+    yield put(createOrderFulfilled());
+  } catch (error) {
+    yield put(createOrderRejected(error));
+  }
+}
+
+export function* getOrderByIdSaga(): Generator {
+  yield debounce(1000, setOrderByIdPending.type, fetchOrderByIdWorker);
+}
+
+export function* createNewOrderSaga(): Generator {
+  yield takeEvery(createOrderPending.type, createOrderWorker);
 }
