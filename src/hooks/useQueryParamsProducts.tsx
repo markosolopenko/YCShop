@@ -1,5 +1,4 @@
 import { useQueryState } from "react-router-use-location-state";
-import { IProductParams } from "types/types";
 
 type TReturnTypeQuery = {
   currentPageQuery: number;
@@ -14,13 +13,12 @@ type TReturnTypeQuery = {
   setOriginsQuery: (origins: string) => void;
 };
 
-export const useQueryParamsProducts = (initialStates: IProductParams): TReturnTypeQuery => {
-  const { page, perPage, minPrice, maxPrice, origins } = initialStates;
-  const [currentPageQuery, setCurrentPageQuery] = useQueryState("page", page);
-  const [perPageQuery, setPerPageQuery] = useQueryState("perPage", perPage);
-  const [originsQuery, setOriginsQuery] = useQueryState("origins", origins);
-  const [minPriceQuery, setMinPriceQuery] = useQueryState("minPrice", minPrice);
-  const [maxPriceQuery, setMaxPriceQuery] = useQueryState("maxPrice", maxPrice);
+export const useQueryParamsProducts = (): TReturnTypeQuery => {
+  const [currentPageQuery, setCurrentPageQuery] = useQueryState("page", 1);
+  const [perPageQuery, setPerPageQuery] = useQueryState("perPage", 10);
+  const [originsQuery, setOriginsQuery] = useQueryState("origins", "");
+  const [minPriceQuery, setMinPriceQuery] = useQueryState("minPrice", "");
+  const [maxPriceQuery, setMaxPriceQuery] = useQueryState("maxPrice", "");
 
   return {
     currentPageQuery,

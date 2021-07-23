@@ -76,6 +76,14 @@ const productsSlice = createSlice({
       state.isEditable = isEditable;
       state.selectedOrigins = selectedOrigins;
     },
+    clearAllQuerys(state, action) {
+      state.minPrice = "";
+      state.maxPrice = "";
+      state.currentPage = 1;
+      state.perPage = 10;
+      state.isEditable = action.payload;
+      state.selectedOrigins = [];
+    },
     updateProductInList(state, action) {
       const { id, product } = action.payload;
       const { name, price, origin } = product;
@@ -171,4 +179,5 @@ export const {
   createNewProduct,
   clearCart,
   cleareCreatedProducts,
+  clearAllQuerys,
 } = productsSlice.actions;

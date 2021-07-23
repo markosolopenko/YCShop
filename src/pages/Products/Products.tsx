@@ -47,7 +47,7 @@ export const Products: React.FC = () => {
     setMaxPriceQuery,
     originsQuery,
     setOriginsQuery,
-  } = useQueryParamsProducts(params);
+  } = useQueryParamsProducts();
 
   const dispatch = useDispatch();
   const { plus } = operators;
@@ -87,6 +87,7 @@ export const Products: React.FC = () => {
   if (status === PENDING) {
     return <Loader />;
   }
+
   return (
     <div className={s.products}>
       <div className={s.products__top}>
@@ -104,7 +105,7 @@ export const Products: React.FC = () => {
       </div>
 
       <div className={s.products__filters}>
-        <FilterProductsPerPage perPage={perPageQuery} setPerPageQuery={setPerPageQuery} />
+        <FilterProductsPerPage perPage={params.perPage} setPerPageQuery={setPerPageQuery} />
         <FilterByOrigins
           selectedOriginsQuery={selectedOrigins}
           setSelectedOriginsQuery={setOriginsQuery}
@@ -114,6 +115,7 @@ export const Products: React.FC = () => {
           maxPriceQuery={maxPriceQuery}
           setMinPriceQuery={setMinPriceQuery}
           setMaxPriceQuery={setMaxPriceQuery}
+          setPageQuery={setCurrentPageQuery}
         />
       </div>
       <div className={s.products__body} ref={body}>

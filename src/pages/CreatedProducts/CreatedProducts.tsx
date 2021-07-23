@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { setIsEditable, loadMoreProducts } from "features/products/productsSlice";
 import { useSelectorsForCreatedProducts } from "hooks/useSelectorsForCreatedProducts";
 import { EditProductModal } from "components/EditProductModal/EditProductModal";
+import { makeArrayOfSelectedOrigins } from "helpers/arrayFromSelectedOrigins";
+import { useQueryParamsProducts } from "hooks/useQueryParamsProducts";
 
 import { IProduct } from "../../types/types";
 import { useModal } from "../../hooks/useModal";
@@ -19,6 +21,19 @@ import s from "./CreatedProducts.module.scss";
 export const CreatedProducts: React.FC = () => {
   const { params, isProductCereated, productsStatus, products, range, selectedOrigins } =
     useSelectorsForCreatedProducts();
+  const {
+    currentPageQuery,
+    setCurrentPageQuery,
+    perPageQuery,
+    setPerPageQuery,
+    minPriceQuery,
+    setMinPriceQuery,
+    maxPriceQuery,
+    setMaxPriceQuery,
+    originsQuery,
+    setOriginsQuery,
+  } = useQueryParamsProducts();
+
   const [editProduct, setEditProduct] = useState<IProduct>({
     isEditable: false,
     id: "",
@@ -34,41 +49,48 @@ export const CreatedProducts: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setIsEditable(true));
-    return () => {
-      dispatch(setIsEditable(false));
-    };
+    dispatch(
+      setIsEditable({
+        page: currentPageQuery,
+        isEditable: true,
+        perPage: perPageQuery,
+        minPrice: minPriceQuery,
+        maxPrice: maxPriceQuery,
+        selectedOrigins: originsQuery ? makeArrayOfSelectedOrigins(originsQuery) : [],
+      })
+    );
   }, [dispatch]);
 
   const handlePaginationChange = useCallback(
     (page: number) => {
       dispatch(loadMoreProducts(page));
+      setCurrentPageQuery(page);
     },
     [params.page]
   );
 
   const handleEditClick = (item: IProduct) => {
-    setOpen();
     setEditProduct(item);
+    setOpen();
   };
 
   if (productsStatus === PENDING && isProductCereated !== "start") {
     return <Loader />;
   }
-
   return (
     <div className={s["created-products"]}>
       <div className={s["created-products__filters"]}>
-        <FilterProductsPerPage perPage={params.perPage} setPerPageQuery={() => {}} />
+        <FilterProductsPerPage perPage={perPageQuery} setPerPageQuery={setPerPageQuery} />
         <FilterByOrigins
-          setSelectedOriginsQuery={() => {}}
+          setSelectedOriginsQuery={setOriginsQuery}
           selectedOriginsQuery={selectedOrigins}
         />
         <FilterByPrice
-          minPriceQuery={""}
-          maxPriceQuery={""}
-          setMinPriceQuery={() => {}}
-          setMaxPriceQuery={() => {}}
+          minPriceQuery={minPriceQuery}
+          maxPriceQuery={maxPriceQuery}
+          setMinPriceQuery={setMinPriceQuery}
+          setMaxPriceQuery={setMaxPriceQuery}
+          setPageQuery={setCurrentPageQuery}
         />
       </div>
       <div className={s["created-products__body"]}>
@@ -78,7 +100,11 @@ export const CreatedProducts: React.FC = () => {
         />
       </div>
       {range > 0 && (
-        <Pagination onChange={handlePaginationChange} activePage={params.page} totalPages={range} />
+        <Pagination
+          onChange={handlePaginationChange}
+          activePage={currentPageQuery}
+          totalPages={range}
+        />
       )}
       {isOpen && <EditProductModal setClose={setClose} product={editProduct} />}
     </div>

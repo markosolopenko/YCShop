@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
-import { loadMoreProducts, setRangePrices } from "features/products/productsSlice";
+import { setRangePrices } from "features/products/productsSlice";
 import { useDispatch } from "react-redux";
 import s from "./FilterByPrice.module.scss";
 
@@ -12,6 +12,7 @@ type TProps = {
   maxPriceQuery: string;
   setMinPriceQuery: (minPrice: string) => void;
   setMaxPriceQuery: (maxPrice: string) => void;
+  setPageQuery: (page: number) => void;
 };
 
 export const FilterByPrice: React.FC<TProps> = ({
@@ -19,6 +20,7 @@ export const FilterByPrice: React.FC<TProps> = ({
   maxPriceQuery,
   setMinPriceQuery,
   setMaxPriceQuery,
+  setPageQuery,
 }) => {
   const [values, setValues] = useState<TStateValues>({ min: minPriceQuery, max: maxPriceQuery });
   const dispatch = useDispatch();
@@ -37,9 +39,9 @@ export const FilterByPrice: React.FC<TProps> = ({
   const { min, max } = values;
   const handleFilterClick = useCallback(() => {
     dispatch(setRangePrices(values));
-    dispatch(loadMoreProducts(1));
     setMinPriceQuery(min);
     setMaxPriceQuery(max);
+    setPageQuery(1);
   }, [values]);
 
   return (
