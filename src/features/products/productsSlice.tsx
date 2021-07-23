@@ -28,7 +28,7 @@ const initialState: IProductsSliceState = {
   selectedOrigins: [],
   minPrice: "",
   maxPrice: "",
-  isEditable: false,
+  isEditable: null,
   createdProducts: [],
   isProductCreated: "",
 };
@@ -67,12 +67,14 @@ const productsSlice = createSlice({
       state.perPage = action.payload;
     },
     setIsEditable(state, action) {
-      state.isEditable = action.payload;
+      const { page, isEditable, perPage, selectedOrigins, minPrice, maxPrice } = action.payload;
       state.products = [];
-      state.minPrice = "";
-      state.maxPrice = "";
-      state.currentPage = 1;
-      state.perPage = 10;
+      state.minPrice = minPrice;
+      state.maxPrice = maxPrice;
+      state.currentPage = page;
+      state.perPage = perPage;
+      state.isEditable = isEditable;
+      state.selectedOrigins = selectedOrigins;
     },
     updateProductInList(state, action) {
       const { id, product } = action.payload;

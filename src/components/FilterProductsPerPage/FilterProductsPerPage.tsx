@@ -1,8 +1,7 @@
 import { changeAmountOfPorductsPerPage } from "features/products/productsSlice";
-import { getParams } from "features/products/selectors";
 import { useCallback } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import s from "./FilterProductsPerPage.module.scss";
 
@@ -12,12 +11,17 @@ const options: { value: string; label: string }[] = [
   { value: "50", label: "50" },
 ];
 
-export const FilterProductsPerPage: React.FC = () => {
+type TProps = {
+  perPage: number;
+  setPerPageQuery: (perPage: number) => void;
+};
+
+export const FilterProductsPerPage: React.FC<TProps> = ({ perPage, setPerPageQuery }) => {
   const dispatch = useDispatch();
-  const { perPage } = useSelector(getParams);
 
   const handleInputChange = useCallback((e: { value: string; label: string } | null) => {
     dispatch(changeAmountOfPorductsPerPage(Number(e?.value)));
+    setPerPageQuery(Number(e?.value));
   }, []);
 
   return (

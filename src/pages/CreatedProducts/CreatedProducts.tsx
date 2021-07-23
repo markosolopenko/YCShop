@@ -17,7 +17,7 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import s from "./CreatedProducts.module.scss";
 
 export const CreatedProducts: React.FC = () => {
-  const { params, isProductCereated, productsStatus, products, range } =
+  const { params, isProductCereated, productsStatus, products, range, selectedOrigins } =
     useSelectorsForCreatedProducts();
   const [editProduct, setEditProduct] = useState<IProduct>({
     isEditable: false,
@@ -59,9 +59,17 @@ export const CreatedProducts: React.FC = () => {
   return (
     <div className={s["created-products"]}>
       <div className={s["created-products__filters"]}>
-        <FilterProductsPerPage />
-        <FilterByOrigins />
-        <FilterByPrice />
+        <FilterProductsPerPage perPage={params.perPage} setPerPageQuery={() => {}} />
+        <FilterByOrigins
+          setSelectedOriginsQuery={() => {}}
+          selectedOriginsQuery={selectedOrigins}
+        />
+        <FilterByPrice
+          minPriceQuery={""}
+          maxPriceQuery={""}
+          setMinPriceQuery={() => {}}
+          setMaxPriceQuery={() => {}}
+        />
       </div>
       <div className={s["created-products__body"]}>
         <ProductsList

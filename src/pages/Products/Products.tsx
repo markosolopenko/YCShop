@@ -11,12 +11,14 @@ import {
   getParams,
   getProductsList,
   getRange,
+  getSelectedOrigins,
   getStatus,
-  getIsEditable,
 } from "features/products/selectors";
 import { PENDING } from "constants/status";
 import { Loader } from "components/Loader/Loader";
+import { makeArrayOfSelectedOrigins } from "helpers/arrayFromSelectedOrigins";
 import { openNotificationWithIcon } from "helpers/notification";
+import { useQueryParamsProducts } from "hooks/useQueryParamsProducts";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
 import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
@@ -33,15 +35,34 @@ export const Products: React.FC = () => {
   const range = useSelector(getRange);
   const params = useSelector(getParams);
   const status = useSelector(getStatus);
-  const isEditable = useSelector(getIsEditable);
+  const selectedOrigins = useSelector(getSelectedOrigins);
+  const {
+    currentPageQuery,
+    setCurrentPageQuery,
+    perPageQuery,
+    setPerPageQuery,
+    minPriceQuery,
+    setMinPriceQuery,
+    maxPriceQuery,
+    setMaxPriceQuery,
+    originsQuery,
+    setOriginsQuery,
+  } = useQueryParamsProducts(params);
 
   const dispatch = useDispatch();
   const { plus } = operators;
 
   useEffect(() => {
-    if (isEditable) {
-      dispatch(setIsEditable(false));
-    }
+    dispatch(
+      setIsEditable({
+        page: currentPageQuery,
+        isEditable: false,
+        perPage: perPageQuery,
+        minPrice: minPriceQuery,
+        maxPrice: maxPriceQuery,
+        selectedOrigins: originsQuery ? makeArrayOfSelectedOrigins(originsQuery) : [],
+      })
+    );
   }, []);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
@@ -54,6 +75,7 @@ export const Products: React.FC = () => {
 
   const handlePaginationChange = (page: number) => {
     dispatch(loadMoreProducts(page));
+    setCurrentPageQuery(page);
   };
 
   const handleAddToCartClick: (item: IProduct) => void = useCallback((item: IProduct) => {
@@ -65,7 +87,6 @@ export const Products: React.FC = () => {
   if (status === PENDING) {
     return <Loader />;
   }
-
   return (
     <div className={s.products}>
       <div className={s.products__top}>
@@ -83,9 +104,17 @@ export const Products: React.FC = () => {
       </div>
 
       <div className={s.products__filters}>
-        <FilterProductsPerPage />
-        <FilterByOrigins />
-        <FilterByPrice />
+        <FilterProductsPerPage perPage={perPageQuery} setPerPageQuery={setPerPageQuery} />
+        <FilterByOrigins
+          selectedOriginsQuery={selectedOrigins}
+          setSelectedOriginsQuery={setOriginsQuery}
+        />
+        <FilterByPrice
+          minPriceQuery={minPriceQuery}
+          maxPriceQuery={maxPriceQuery}
+          setMinPriceQuery={setMinPriceQuery}
+          setMaxPriceQuery={setMaxPriceQuery}
+        />
       </div>
       <div className={s.products__body} ref={body}>
         <ProductsList
@@ -94,7 +123,11 @@ export const Products: React.FC = () => {
         />
       </div>
       {range > 0 && (
-        <Pagination onChange={handlePaginationChange} activePage={params.page} totalPages={range} />
+        <Pagination
+          onChange={handlePaginationChange}
+          activePage={currentPageQuery}
+          totalPages={range}
+        />
       )}
     </div>
   );
