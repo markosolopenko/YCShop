@@ -1,5 +1,3 @@
-import { ISelectedOrigins } from "features/products/types";
-
 export interface IProduct {
   isEditable: boolean;
   id: string;

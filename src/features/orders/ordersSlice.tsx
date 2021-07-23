@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNewOrderThunk, getOrdersThunk, getOrderByIdThunk } from "./thunks";
+import { createNewOrderThunk, getOrdersThunk } from "./thunks";
 import { IInitStateOrders } from "./types";
 import { PENDING, REJECTED, FULFILLED } from "../../constants/status";
 
@@ -18,6 +18,17 @@ const ordersSlice = createSlice({
   reducers: {
     setOrderId(state, action) {
       state.orderId = action.payload;
+    },
+    setOrderByIdFulfilled(state, action) {
+      state.order = action.payload.data;
+      state.status = FULFILLED;
+    },
+    setOrderByIdRejected(state, action) {
+      state.error = action.payload;
+      state.status = REJECTED;
+    },
+    setOrderByIdPending(state) {
+      state.status = PENDING;
     },
   },
   extraReducers: (builder) => {
@@ -47,21 +58,22 @@ const ordersSlice = createSlice({
         state.error = "Error orders/getOrders";
         state.status = REJECTED;
       });
-    builder
-      .addCase(getOrderByIdThunk.pending, (state) => {
-        state.status = PENDING;
-      })
-      .addCase(getOrderByIdThunk.fulfilled, (state, action) => {
-        state.status = FULFILLED;
-        state.order = action.payload;
-      })
-      .addCase(getOrderByIdThunk.rejected, (state) => {
-        state.status = REJECTED;
-        state.error = "Error getOrderByID";
-      });
+    // builder
+    //   .addCase(getOrderByIdThunk.pending, (state) => {
+    //     state.status = PENDING;
+    //   })
+    //   .addCase(getOrderByIdThunk.fulfilled, (state, action) => {
+    //     state.status = FULFILLED;
+    //     state.order = action.payload;
+    //   })
+    //   .addCase(getOrderByIdThunk.rejected, (state) => {
+    //     state.status = REJECTED;
+    //     state.error = "Error getOrderByID";
+    //   });
   },
 });
 
 export default ordersSlice.reducer;
 
-export const { setOrderId } = ordersSlice.actions;
+export const { setOrderId, setOrderByIdFulfilled, setOrderByIdRejected, setOrderByIdPending } =
+  ordersSlice.actions;
