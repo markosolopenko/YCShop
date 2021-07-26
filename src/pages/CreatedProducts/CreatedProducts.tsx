@@ -19,8 +19,15 @@ import { Pagination } from "../../components/Pagination/Pagination";
 import s from "./CreatedProducts.module.scss";
 
 export const CreatedProducts: React.FC = () => {
-  const { params, isProductCereated, productsStatus, products, range, selectedOrigins } =
-    useSelectorsForCreatedProducts();
+  const {
+    params,
+    isProductCereated,
+    productsStatus,
+    products,
+    range,
+    selectedOrigins,
+    isDebouncing,
+  } = useSelectorsForCreatedProducts();
   const {
     currentPageQuery,
     setCurrentPageQuery,
@@ -74,7 +81,7 @@ export const CreatedProducts: React.FC = () => {
     setOpen();
   };
 
-  if (productsStatus === PENDING && isProductCereated !== "start") {
+  if ((productsStatus === PENDING && isProductCereated !== "start") || isDebouncing) {
     return <Loader />;
   }
   return (

@@ -52,3 +52,5 @@ export const getParams = createSelector(
 export const getRange = createSelector(getTotalItems, getPerPage, (totalItems, perPage) =>
   Math.ceil(totalItems / perPage)
 );
+
+export const selectIsDebouncing = (state: RootState): boolean => state.products.isDebouncing;

@@ -13,6 +13,7 @@ import {
   getRange,
   getSelectedOrigins,
   getStatus,
+  selectIsDebouncing,
 } from "features/products/selectors";
 import { PENDING } from "constants/status";
 import { Loader } from "components/Loader/Loader";
@@ -36,6 +37,7 @@ export const Products: React.FC = () => {
   const params = useSelector(getParams);
   const status = useSelector(getStatus);
   const selectedOrigins = useSelector(getSelectedOrigins);
+  const isDebouncing = useSelector(selectIsDebouncing);
   const {
     currentPageQuery,
     setCurrentPageQuery,
@@ -84,7 +86,7 @@ export const Products: React.FC = () => {
     openNotificationWithIcon("success", "Add to cart", "Item has been added to cart");
   }, []);
 
-  if (status === PENDING) {
+  if (status === PENDING || isDebouncing) {
     return <Loader />;
   }
 

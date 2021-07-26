@@ -5,8 +5,7 @@ import { API_ENDPOINTS } from "../constants/endpoints";
 const { ORDERS } = API_ENDPOINTS;
 
 export const createOrder = async (data: TOrder[]): Promise<{ data: string } | Error> => {
-  const res = await axiosInstance.post(ORDERS, { order: { pieces: data } });
-  return res.data;
+  return await axiosInstance.post(ORDERS, { order: { pieces: data } });
 };
 
 export const getOrders = async (): Promise<{ data: { items: TOrderGet[] } }> => {

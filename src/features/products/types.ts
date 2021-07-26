@@ -24,4 +24,5 @@ export interface IProductsSliceState {
   isEditable: boolean | null;
   createdProducts: IProduct[];
   isProductCreated: string;
+  isDebouncing: boolean;
 }

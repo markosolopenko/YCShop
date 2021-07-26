@@ -31,6 +31,7 @@ const initialState: IProductsSliceState = {
   isEditable: null,
   createdProducts: [],
   isProductCreated: "",
+  isDebouncing: false,
 };
 
 const productsSlice = createSlice({
@@ -103,6 +104,9 @@ const productsSlice = createSlice({
     cleareCreatedProducts(state) {
       state.createdProducts = [];
       state.isProductCreated = "";
+    },
+    setIsDebouncing(state, action) {
+      state.isDebouncing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -180,4 +184,5 @@ export const {
   clearCart,
   cleareCreatedProducts,
   clearAllQuerys,
+  setIsDebouncing,
 } = productsSlice.actions;
