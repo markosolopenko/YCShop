@@ -1,7 +1,7 @@
 import { setIsDebouncing, setSlectedOrigins } from "features/products/productsSlice";
 import { getOrigins } from "features/products/selectors";
 import { ISelectedOrigins } from "features/products/types";
-import { debounce } from "helpers/debounce";
+import { useDebounce } from "hooks/useDebounce";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select, { OptionsType } from "react-select";
@@ -28,11 +28,12 @@ export const FilterByOrigins: React.FC<TProps> = ({
       ),
     [origins]
   );
-  const handleClick = debounce((selected: OptionsType<ISelectedOrigins>) => {
+
+  const handleClick = useDebounce((selected: OptionsType<ISelectedOrigins>) => {
     dispatch(setSlectedOrigins(selected));
     setSelectedOriginsQuery(selected ? selected.map((item) => item.value).join(",") : "");
     dispatch(setIsDebouncing(false));
-  }, 1000);
+  });
 
   const handleSelect = useCallback((selected: OptionsType<ISelectedOrigins>) => {
     dispatch(setIsDebouncing(true));

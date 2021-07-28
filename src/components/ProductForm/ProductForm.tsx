@@ -78,20 +78,14 @@ export const PorductForm: React.FC<TProps> = ({ values, submitHandler }) => {
         <button
           onClick={handleResetClick}
           className={s.form__buttons__reset}
-          disabled={
-            Object.keys(errors).length !== 0 ||
-            Object.keys(dirtyFields).length !== Object.keys(values).length
-          }
+          disabled={Object.keys(errors).length !== 0 || Object.keys(dirtyFields).length < 1}
         >
           Reset
         </button>
         <button
           onClick={onSubmit}
           className={s.form__buttons__submit}
-          disabled={
-            Object.keys(errors).length !== 0 ||
-            Object.keys(dirtyFields).length !== Object.keys(values).length
-          }
+          disabled={Object.keys(errors).length !== 0 || Object.keys(dirtyFields).length < 1}
         >
           Submit
         </button>

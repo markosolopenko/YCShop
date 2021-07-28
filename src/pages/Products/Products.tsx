@@ -3,15 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToCartAction,
   loadMoreProducts,
-  setIsEditable,
   changeCartCountsAtion,
 } from "features/products/productsSlice";
 
 import {
-  getParams,
   getProductsList,
   getRange,
-  getSelectedOrigins,
   getStatus,
   selectIsDebouncing,
 } from "features/products/selectors";
@@ -20,6 +17,7 @@ import { Loader } from "components/Loader/Loader";
 import { makeArrayOfSelectedOrigins } from "helpers/arrayFromSelectedOrigins";
 import { openNotificationWithIcon } from "helpers/notification";
 import { useQueryParamsProducts } from "hooks/useQueryParamsProducts";
+import { fetchProductsThunk } from "features/products/thunks";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
 import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
@@ -34,10 +32,9 @@ import s from "./Products.module.scss";
 export const Products: React.FC = () => {
   const products = useSelector(getProductsList);
   const range = useSelector(getRange);
-  const params = useSelector(getParams);
   const status = useSelector(getStatus);
-  const selectedOrigins = useSelector(getSelectedOrigins);
   const isDebouncing = useSelector(selectIsDebouncing);
+
   const {
     currentPageQuery,
     setCurrentPageQuery,
@@ -53,19 +50,18 @@ export const Products: React.FC = () => {
 
   const dispatch = useDispatch();
   const { plus } = operators;
-
   useEffect(() => {
     dispatch(
-      setIsEditable({
+      fetchProductsThunk({
         page: currentPageQuery,
         isEditable: false,
         perPage: perPageQuery,
         minPrice: minPriceQuery,
         maxPrice: maxPriceQuery,
-        selectedOrigins: originsQuery ? makeArrayOfSelectedOrigins(originsQuery) : [],
+        origins: originsQuery,
       })
     );
-  }, []);
+  }, [currentPageQuery, perPageQuery, minPriceQuery, originsQuery]);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
 
@@ -86,10 +82,6 @@ export const Products: React.FC = () => {
     openNotificationWithIcon("success", "Add to cart", "Item has been added to cart");
   }, []);
 
-  if (status === PENDING || isDebouncing) {
-    return <Loader />;
-  }
-
   return (
     <div className={s.products}>
       <div className={s.products__top}>
@@ -107,9 +99,9 @@ export const Products: React.FC = () => {
       </div>
 
       <div className={s.products__filters}>
-        <FilterProductsPerPage perPage={params.perPage} setPerPageQuery={setPerPageQuery} />
+        <FilterProductsPerPage perPage={perPageQuery} setPerPageQuery={setPerPageQuery} />
         <FilterByOrigins
-          selectedOriginsQuery={selectedOrigins}
+          selectedOriginsQuery={originsQuery ? makeArrayOfSelectedOrigins(originsQuery) : []}
           setSelectedOriginsQuery={setOriginsQuery}
         />
         <FilterByPrice
@@ -120,18 +112,24 @@ export const Products: React.FC = () => {
           setPageQuery={setCurrentPageQuery}
         />
       </div>
-      <div className={s.products__body} ref={body}>
-        <ProductsList
-          productsList={products}
-          button={{ text: "ADD TO CART", handleFunction: handleAddToCartClick }}
-        />
-      </div>
-      {range > 0 && (
-        <Pagination
-          onChange={handlePaginationChange}
-          activePage={currentPageQuery}
-          totalPages={range}
-        />
+      {status === PENDING || isDebouncing ? (
+        <Loader />
+      ) : (
+        <>
+          <div className={s.products__body} ref={body}>
+            <ProductsList
+              productsList={products}
+              button={{ text: "ADD TO CART", handleFunction: handleAddToCartClick }}
+            />
+          </div>
+          {range > 0 && (
+            <Pagination
+              onChange={handlePaginationChange}
+              activePage={currentPageQuery}
+              totalPages={range}
+            />
+          )}
+        </>
       )}
     </div>
   );

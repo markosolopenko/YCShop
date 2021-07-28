@@ -1,11 +1,16 @@
 import { changeAmountOfPorductsPerPage, setIsDebouncing } from "features/products/productsSlice";
-import { useCallback } from "react";
+import { useDebounce } from "hooks/useDebounce";
+import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
-import { debounce } from "../../helpers/debounce";
 import s from "./FilterProductsPerPage.module.scss";
 
-const options: { value: string; label: string }[] = [
+type TEvent = {
+  value: string;
+  label: string;
+};
+
+const options: TEvent[] = [
   { value: "10", label: "10" },
   { value: "25", label: "25" },
   { value: "50", label: "50" },
@@ -18,14 +23,20 @@ type TProps = {
 
 export const FilterProductsPerPage: React.FC<TProps> = ({ perPage, setPerPageQuery }) => {
   const dispatch = useDispatch();
+  const value = useMemo(() => {
+    return {
+      value: perPage.toString(),
+      label: perPage.toString(),
+    };
+  }, [perPage]);
 
-  const clickHandler = debounce((value: number) => {
+  const clickHandler = useDebounce((value: number) => {
     dispatch(setIsDebouncing(false));
     dispatch(changeAmountOfPorductsPerPage(value));
     setPerPageQuery(value);
-  }, 1000);
+  });
 
-  const handleInputChange = useCallback((e: { value: string; label: string } | null) => {
+  const handleInputChange = useCallback((e: TEvent | null) => {
     dispatch(setIsDebouncing(true));
     clickHandler(Number(e?.value));
   }, []);
@@ -33,11 +44,7 @@ export const FilterProductsPerPage: React.FC<TProps> = ({ perPage, setPerPageQue
   return (
     <div className={s["filter-perPage"]}>
       <div className={s["filter-perPage__label"]}>Filter amount of products per page</div>
-      <Select
-        options={options}
-        defaultValue={{ value: perPage.toString(), label: perPage.toString() }}
-        onChange={handleInputChange}
-      />
+      <Select options={options} onChange={handleInputChange} defaultValue={value} />
     </div>
   );
 };

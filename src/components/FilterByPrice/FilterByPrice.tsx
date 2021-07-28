@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
-import { debounce } from "helpers/debounce";
 import { setIsDebouncing, setRangePrices } from "features/products/productsSlice";
+import { useDebounce } from "hooks/useDebounce";
 import { useDispatch } from "react-redux";
 import s from "./FilterByPrice.module.scss";
 
@@ -38,13 +38,13 @@ export const FilterByPrice: React.FC<TProps> = ({
     [values]
   );
 
-  const clickHandler = debounce(() => {
+  const clickHandler = useDebounce(() => {
     dispatch(setRangePrices(values));
     setMinPriceQuery(min);
     setMaxPriceQuery(max);
     setPageQuery(1);
     dispatch(setIsDebouncing(false));
-  }, 1000);
+  });
 
   const { min, max } = values;
   const handleFilterClick = useCallback(() => {

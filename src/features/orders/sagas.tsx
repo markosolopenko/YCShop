@@ -39,10 +39,7 @@ function* createOrderWorker() {
   }
 }
 
-export function* getOrderByIdSaga(): Generator {
+export function* ordersWatcher(): Generator {
   yield takeEvery(setOrderByIdPending.type, fetchOrderByIdWorker);
-}
-
-export function* createNewOrderSaga(): Generator {
   yield takeEvery(createOrderPending.type, createOrderWorker);
 }
