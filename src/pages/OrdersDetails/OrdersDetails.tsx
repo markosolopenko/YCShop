@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "components/Loader/Loader";
 import { Empty } from "antd";
-import { getOrderByIdThunk } from "../../features/orders/thunks";
+
+import { setOrderByIdPending } from "features/orders/ordersSlice";
 import { selectStatus, selectOrdersParams } from "../../features/orders/selectors";
 import { PENDING } from "../../constants/status";
 import { formatMoney } from "../../helpers/formatMoney";
@@ -17,7 +18,7 @@ export const OrdersDetails: React.FC = () => {
 
   useEffect(() => {
     if (orderId) {
-      dispatch(getOrderByIdThunk(orderId));
+      dispatch(setOrderByIdPending());
     }
   }, []);
 

@@ -3,20 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToCartAction,
   loadMoreProducts,
-  setIsEditable,
   changeCartCountsAtion,
 } from "features/products/productsSlice";
 
 import {
-  getParams,
   getProductsList,
   getRange,
   getStatus,
-  getIsEditable,
+  selectIsDebouncing,
 } from "features/products/selectors";
 import { PENDING } from "constants/status";
 import { Loader } from "components/Loader/Loader";
+import { makeArrayOfSelectedOrigins } from "helpers/arrayFromSelectedOrigins";
 import { openNotificationWithIcon } from "helpers/notification";
+import { useQueryParamsProducts } from "hooks/useQueryParamsProducts";
+import { fetchProductsThunk } from "features/products/thunks";
 import { ProductsList } from "../../components/ProductsList/ProductsList";
 import { FilterByOrigins } from "../../components/FilterByOrigins/FilterByOrigins";
 import { FilterProductsPerPage } from "../../components/FilterProductsPerPage/FilterProductsPerPage";
@@ -31,18 +32,36 @@ import s from "./Products.module.scss";
 export const Products: React.FC = () => {
   const products = useSelector(getProductsList);
   const range = useSelector(getRange);
-  const params = useSelector(getParams);
   const status = useSelector(getStatus);
-  const isEditable = useSelector(getIsEditable);
+  const isDebouncing = useSelector(selectIsDebouncing);
+
+  const {
+    currentPageQuery,
+    setCurrentPageQuery,
+    perPageQuery,
+    setPerPageQuery,
+    minPriceQuery,
+    setMinPriceQuery,
+    maxPriceQuery,
+    setMaxPriceQuery,
+    originsQuery,
+    setOriginsQuery,
+  } = useQueryParamsProducts();
 
   const dispatch = useDispatch();
   const { plus } = operators;
-
   useEffect(() => {
-    if (isEditable) {
-      dispatch(setIsEditable(false));
-    }
-  }, []);
+    dispatch(
+      fetchProductsThunk({
+        page: currentPageQuery,
+        isEditable: false,
+        perPage: perPageQuery,
+        minPrice: minPriceQuery,
+        maxPrice: maxPriceQuery,
+        origins: originsQuery,
+      })
+    );
+  }, [currentPageQuery, perPageQuery, minPriceQuery, originsQuery]);
 
   const body: React.RefObject<HTMLDivElement> | null = useRef(null);
 
@@ -54,6 +73,7 @@ export const Products: React.FC = () => {
 
   const handlePaginationChange = (page: number) => {
     dispatch(loadMoreProducts(page));
+    setCurrentPageQuery(page);
   };
 
   const handleAddToCartClick: (item: IProduct) => void = useCallback((item: IProduct) => {
@@ -61,10 +81,6 @@ export const Products: React.FC = () => {
     dispatch(changeCartCountsAtion());
     openNotificationWithIcon("success", "Add to cart", "Item has been added to cart");
   }, []);
-
-  if (status === PENDING) {
-    return <Loader />;
-  }
 
   return (
     <div className={s.products}>
@@ -83,18 +99,37 @@ export const Products: React.FC = () => {
       </div>
 
       <div className={s.products__filters}>
-        <FilterProductsPerPage />
-        <FilterByOrigins />
-        <FilterByPrice />
-      </div>
-      <div className={s.products__body} ref={body}>
-        <ProductsList
-          productsList={products}
-          button={{ text: "ADD TO CART", handleFunction: handleAddToCartClick }}
+        <FilterProductsPerPage perPage={perPageQuery} setPerPageQuery={setPerPageQuery} />
+        <FilterByOrigins
+          selectedOriginsQuery={originsQuery ? makeArrayOfSelectedOrigins(originsQuery) : []}
+          setSelectedOriginsQuery={setOriginsQuery}
+        />
+        <FilterByPrice
+          minPriceQuery={minPriceQuery}
+          maxPriceQuery={maxPriceQuery}
+          setMinPriceQuery={setMinPriceQuery}
+          setMaxPriceQuery={setMaxPriceQuery}
+          setPageQuery={setCurrentPageQuery}
         />
       </div>
-      {range > 0 && (
-        <Pagination onChange={handlePaginationChange} activePage={params.page} totalPages={range} />
+      {status === PENDING || isDebouncing ? (
+        <Loader />
+      ) : (
+        <>
+          <div className={s.products__body} ref={body}>
+            <ProductsList
+              productsList={products}
+              button={{ text: "ADD TO CART", handleFunction: handleAddToCartClick }}
+            />
+          </div>
+          {range > 0 && (
+            <Pagination
+              onChange={handlePaginationChange}
+              activePage={currentPageQuery}
+              totalPages={range}
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -1,16 +1,29 @@
-import { loadMoreProducts, setRangePrices } from "features/products/productsSlice";
-import { getParams } from "features/products/selectors";
 import React, { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { setIsDebouncing, setRangePrices } from "features/products/productsSlice";
+import { useDebounce } from "hooks/useDebounce";
+import { useDispatch } from "react-redux";
 import s from "./FilterByPrice.module.scss";
 
 type TStateValues = {
   min: string;
   max: string;
 };
-export const FilterByPrice: React.FC = () => {
-  const { minPrice, maxPrice } = useSelector(getParams);
-  const [values, setValues] = useState<TStateValues>({ min: minPrice || "", max: maxPrice || "" });
+type TProps = {
+  minPriceQuery: string;
+  maxPriceQuery: string;
+  setMinPriceQuery: (minPrice: string) => void;
+  setMaxPriceQuery: (maxPrice: string) => void;
+  setPageQuery: (page: number) => void;
+};
+
+export const FilterByPrice: React.FC<TProps> = ({
+  minPriceQuery,
+  maxPriceQuery,
+  setMinPriceQuery,
+  setMaxPriceQuery,
+  setPageQuery,
+}) => {
+  const [values, setValues] = useState<TStateValues>({ min: minPriceQuery, max: maxPriceQuery });
   const dispatch = useDispatch();
 
   const handleInputsChange = useCallback(
@@ -24,10 +37,19 @@ export const FilterByPrice: React.FC = () => {
     },
     [values]
   );
+
+  const clickHandler = useDebounce(() => {
+    dispatch(setRangePrices(values));
+    setMinPriceQuery(min);
+    setMaxPriceQuery(max);
+    setPageQuery(1);
+    dispatch(setIsDebouncing(false));
+  });
+
   const { min, max } = values;
   const handleFilterClick = useCallback(() => {
-    dispatch(setRangePrices(values));
-    dispatch(loadMoreProducts(1));
+    dispatch(setIsDebouncing(true));
+    clickHandler();
   }, [values]);
 
   return (

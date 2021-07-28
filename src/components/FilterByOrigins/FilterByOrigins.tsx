@@ -1,14 +1,22 @@
-import { setSlectedOrigins } from "features/products/productsSlice";
-import { getOrigins, getSelectedOrigins } from "features/products/selectors";
+import { setIsDebouncing, setSlectedOrigins } from "features/products/productsSlice";
+import { getOrigins } from "features/products/selectors";
 import { ISelectedOrigins } from "features/products/types";
+import { useDebounce } from "hooks/useDebounce";
 import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
+import Select, { OptionsType } from "react-select";
 import s from "./FilterByOrigins.module.scss";
 
-export const FilterByOrigins: React.FC = () => {
+type TProps = {
+  selectedOriginsQuery: ISelectedOrigins[];
+  setSelectedOriginsQuery: (origins: string) => void;
+};
+
+export const FilterByOrigins: React.FC<TProps> = ({
+  selectedOriginsQuery,
+  setSelectedOriginsQuery,
+}) => {
   const origins = useSelector(getOrigins);
-  const selectedOrigins = useSelector(getSelectedOrigins);
   const dispatch = useDispatch();
   const options = useMemo(
     () =>
@@ -21,8 +29,15 @@ export const FilterByOrigins: React.FC = () => {
     [origins]
   );
 
-  const handleSelect = useCallback((selected: ISelectedOrigins[] | unknown) => {
+  const handleClick = useDebounce((selected: OptionsType<ISelectedOrigins>) => {
     dispatch(setSlectedOrigins(selected));
+    setSelectedOriginsQuery(selected ? selected.map((item) => item.value).join(",") : "");
+    dispatch(setIsDebouncing(false));
+  });
+
+  const handleSelect = useCallback((selected: OptionsType<ISelectedOrigins>) => {
+    dispatch(setIsDebouncing(true));
+    handleClick(selected);
   }, []);
 
   return (
@@ -35,7 +50,7 @@ export const FilterByOrigins: React.FC = () => {
         className="basic-multi-select"
         classNamePrefix="select"
         onChange={handleSelect}
-        defaultValue={selectedOrigins}
+        defaultValue={selectedOriginsQuery}
       />
     </div>
   );

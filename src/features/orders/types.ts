@@ -14,7 +14,7 @@ export interface IInitStateOrders {
   orders: TOrderGet[];
   status: string;
   error: string;
-  orderCreated: boolean;
+  orderCreated: string;
   orderId: string;
   order: TOrderGet | null;
 }

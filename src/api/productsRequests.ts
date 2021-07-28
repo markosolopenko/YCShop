@@ -1,5 +1,4 @@
 import { IProduct, IProducts, IUpdateProduct } from "types/types";
-import { ISelectedOrigins } from "features/products/types";
 import { IFormData } from "../components/ProductForm/types";
 import { axiosInstance } from "./api";
 
@@ -15,7 +14,7 @@ export type TGetOriginsParams = {
 export type TGetProductsParams = {
   page?: number;
   perPage?: number;
-  origins: ISelectedOrigins[];
+  origins: string;
   minPrice?: string;
   maxPrice?: string;
   isEditable?: boolean;
@@ -29,9 +28,8 @@ export const getProducts = async ({
   maxPrice,
   isEditable,
 }: TGetProductsParams): Promise<{ data: IProducts }> => {
-  const selecedOrigins = origins.map((origin) => origin.value).join(",");
   return await axiosInstance.get(PRODUCTS, {
-    params: { page, perPage, origins: selecedOrigins, minPrice, maxPrice, editable: isEditable },
+    params: { page, perPage, origins, minPrice, maxPrice, editable: isEditable },
   });
 };
 

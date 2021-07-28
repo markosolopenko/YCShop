@@ -21,7 +21,8 @@ export interface IProductsSliceState {
   selectedOrigins: ISelectedOrigins[];
   minPrice: string;
   maxPrice: string;
-  isEditable: boolean;
+  isEditable: boolean | null;
   createdProducts: IProduct[];
   isProductCreated: string;
+  isDebouncing: boolean;
 }

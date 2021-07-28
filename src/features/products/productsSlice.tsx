@@ -28,9 +28,10 @@ const initialState: IProductsSliceState = {
   selectedOrigins: [],
   minPrice: "",
   maxPrice: "",
-  isEditable: false,
+  isEditable: null,
   createdProducts: [],
   isProductCreated: "",
+  isDebouncing: false,
 };
 
 const productsSlice = createSlice({
@@ -67,12 +68,22 @@ const productsSlice = createSlice({
       state.perPage = action.payload;
     },
     setIsEditable(state, action) {
-      state.isEditable = action.payload;
+      const { page, isEditable, perPage, selectedOrigins, minPrice, maxPrice } = action.payload;
       state.products = [];
+      state.minPrice = minPrice;
+      state.maxPrice = maxPrice;
+      state.currentPage = page;
+      state.perPage = perPage;
+      state.isEditable = isEditable;
+      state.selectedOrigins = selectedOrigins;
+    },
+    clearAllQuerys(state, action) {
       state.minPrice = "";
       state.maxPrice = "";
       state.currentPage = 1;
       state.perPage = 10;
+      state.isEditable = action.payload;
+      state.selectedOrigins = [];
     },
     updateProductInList(state, action) {
       const { id, product } = action.payload;
@@ -93,6 +104,9 @@ const productsSlice = createSlice({
     cleareCreatedProducts(state) {
       state.createdProducts = [];
       state.isProductCreated = "";
+    },
+    setIsDebouncing(state, action) {
+      state.isDebouncing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -169,4 +183,6 @@ export const {
   createNewProduct,
   clearCart,
   cleareCreatedProducts,
+  clearAllQuerys,
+  setIsDebouncing,
 } = productsSlice.actions;
