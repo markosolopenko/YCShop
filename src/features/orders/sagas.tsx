@@ -17,7 +17,7 @@ function* fetchOrderByIdWorker() {
   try {
     const id: string = yield select(selectOrderId);
 
-    const order: TOrderGet[] = yield call(getOrderById, `${id}`);
+    const order: TOrderGet[] = yield call(getOrderById, id);
     yield put(setOrderByIdFulfilled(order));
   } catch (error) {
     yield put(setOrderByIdRejected(error));

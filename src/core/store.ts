@@ -8,7 +8,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: { products: productsSlice, orders: ordersSlice },
-  middleware: [...getDefaultMiddleware(), sagaMiddleware],
+  middleware: [...getDefaultMiddleware({ serializableCheck: false }), sagaMiddleware],
 });
 
 sagaMiddleware.run(rootSaga);
