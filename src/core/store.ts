@@ -8,7 +8,12 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: { products: productsSlice, orders: ordersSlice },
-  middleware: [...getDefaultMiddleware({ serializableCheck: false }), sagaMiddleware],
+  middleware: [
+    ...getDefaultMiddleware({
+      serializableCheck: { ignoredActions: ["orders/setOrderByIdFulfilled"] },
+    }),
+    sagaMiddleware,
+  ],
 });
 
 sagaMiddleware.run(rootSaga);
